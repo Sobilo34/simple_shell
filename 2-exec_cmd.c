@@ -25,6 +25,7 @@ char *exec_cmd(char **args, char **env)
 		perror("Command not found\n");
 		exit(EXIT_FAILURE);
 	}
+
 	if (full_path == NULL)
 	{
 		perror("Unable to locate env\n");
@@ -53,7 +54,7 @@ char *exec_cmd(char **args, char **env)
 		token = strtok(NULL, ":");
 	}
 
-	perror("Command not found\n");
+	perror("./hsh:");
 	return(args[0]);
 }
 

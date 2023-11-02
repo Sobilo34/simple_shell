@@ -21,9 +21,9 @@ int main(int argc, char **env)
 	{
 		if (isatty(STDIN_FILENO) == 1)
 		{
-			printf("$ ");
+			write(1, "$ ", 2);
+			fflush(stdout);
 		}
-
 		message = getline(&buffer, &len, stdin);
 		if (message == -1)
 		{
