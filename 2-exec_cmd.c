@@ -22,8 +22,11 @@ char *exec_cmd(char **args, char **env)
 			perror("Unable to execute\n");
 			exit(EXIT_FAILURE);
 		}
-		perror("Command not found\n");
-		exit(EXIT_FAILURE);
+		else
+		{
+			perror("Command not found\n");
+			exit(EXIT_FAILURE);
+		}
 	}
 
 	if (full_path == NULL)
@@ -35,7 +38,7 @@ char *exec_cmd(char **args, char **env)
 	token = strtok(full_path, ":");
 	while (token != NULL)
 	{
-		our_path = malloc(strlen(token) + strlen(args[0] + 2));
+		our_path = malloc(strlen(token) + strlen(args[0]) + 2);
 		if (our_path == NULL)
 		{
 			perror("Unable to allocate memory");
@@ -47,14 +50,13 @@ char *exec_cmd(char **args, char **env)
 		{
 			execve(our_path, args, env);
 			perror("Unable to execute");
+			free(our_path);
 			exit(EXIT_FAILURE);
 		}
 
 		free(our_path);
 		token = strtok(NULL, ":");
 	}
-
-	perror("./hsh:");
 	return(args[0]);
 }
 

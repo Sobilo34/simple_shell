@@ -14,14 +14,14 @@ int main(int argc, char **env)
 	size_t len;
 	char *buffer, *token = NULL;
 	char *args[1024], *delim = " \t\r\a";
-	int idx, status = 0;
+	int idx;
 	(void)argc;
 
 	while (1)
 	{
 		if (isatty(STDIN_FILENO) == 1)
 		{
-			write(1, "$ ", 2);
+			write(1, "#cisfun$ ", 10);
 			fflush(stdout);
 		}
 		message = getline(&buffer, &len, stdin);
@@ -48,8 +48,9 @@ int main(int argc, char **env)
 		}
 		args[idx] = NULL;
 
-		if (args[0] == NULL)
+		if (args[0] == NULL)/**For empty command, go back to the loop**/
 			continue;
+
 		if (strcmp(buffer, "exit") == 0)
 		{
 			exit(0);
@@ -62,21 +63,29 @@ int main(int argc, char **env)
 			continue;
 		}
 
-		paid = fork();
-		if (paid == -1)
+		if (access(args[0], X_OK) == 0)
 		{
-			perror("there was an error\n");
-			exit(EXIT_FAILURE);
-			free(buffer);
-		}
 
-		if (paid == 0)
-		{
-			exec_cmd(args, env);
-		}
+			paid = fork();
+			if (paid == -1)
+			{
+				perror("there was an error\n");
+				free(buffer);
+				exit(EXIT_FAILURE);
+			}
 
+			if (paid == 0)
+			{
+				exec_cmd(args, env);
+				perror("Exec failure");
+				exit(EXIT_FAILURE);
+			}
+
+			else
+				wait(NULL);
+		}
 		else
-			wait(&status);
+			perror("./hsh");
 	}
 	return (0);
 }
