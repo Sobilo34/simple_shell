@@ -11,5 +11,5 @@
 char *exec_cmd(char **args, char **env);
 void print_env(char **env);
 extern char **environ;
-
+int check_cmd(char **input);
 #endif

@@ -63,7 +63,7 @@ int main(int argc, char **env)
 			continue;
 		}
 
-		if (access(args[0], X_OK) == 0)
+		if (check_cmd(&args[0]) == 1)
 		{
 
 			paid = fork();
