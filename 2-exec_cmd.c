@@ -7,56 +7,63 @@
 
 char *exec_cmd(char **args, char **env)
 {
-	char *full_path = getenv("PATH"), *token, *our_path;
+	char *full_path = getenv("PATH");
+	char *token, *our_path;
 
 	if (args[0] == NULL)
 	{
-		exit(EXIT_FAILURE);
+		write(2, "Empty command\n", 14);
 	}
 
-	if (args[0][0] == '/')
+	if (execve(args[0], args, env) == -1)
+	{
+		perror("Execution error");
+	}
+	else if (args[0][0] == '/')
 	{
 		if (access(args[0], X_OK) == 0)
 		{
 			execve(args[0], args, env);
-			perror("Unable to execute\n");
-			exit(EXIT_FAILURE);
+			write(2, "Unable to execute\n", 18);
 		}
 		else
 		{
-			perror("Command not found\n");
-			exit(EXIT_FAILURE);
+			write(2, "Command not found\n", 18);
 		}
 	}
-
-	if (full_path == NULL)
+	else if (full_path == NULL)
 	{
-		perror("Unable to locate env\n");
-		exit(EXIT_FAILURE);
+		write(2, "Unable to locate PATH\n", 23);
 	}
-
+	else
+	{
 	token = strtok(full_path, ":");
 	while (token != NULL)
 	{
 		our_path = malloc(strlen(token) + strlen(args[0]) + 2);
 		if (our_path == NULL)
 		{
-			perror("Unable to allocate memory");
-			exit(EXIT_FAILURE);
+			 write(2, "Unable to allocate memory\n", 27);
 		}
-		sprintf(our_path, "%s/%s", token, args[0]);
+		else
+		{
+			strcpy(our_path, token);
+			strcat(our_path, "/");
+			strcat(our_path, args[0]);
 
 		if (access(our_path, X_OK) == 0)
 		{
 			execve(our_path, args, env);
-			perror("Unable to execute");
-			free(our_path);
-			exit(EXIT_FAILURE);
+			write(2, "Unable to execute\n", 18);
 		}
 
 		free(our_path);
+		}
 		token = strtok(NULL, ":");
+	}
+	write(2, "Command not found in PATH\n", 27);
 	}
 	return(args[0]);
 }
+
 

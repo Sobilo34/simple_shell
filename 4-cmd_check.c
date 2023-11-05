@@ -1,6 +1,6 @@
 #include "main.h"
 /**
- * _exe_path - check if the command exist in the
+ * check_cmd - check if the command exist in the
  * path, if it does not creat a path and append it to the directory
  * @str: pointer to the command.
  *

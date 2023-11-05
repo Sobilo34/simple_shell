@@ -1,5 +1,6 @@
 #include "main.h"
 
+#define PATH_MAX 4096
 /**
  * main - This is the entry point of all functions
  * @argc: The is the arguments
@@ -9,11 +10,11 @@
 
 int main(int argc, char **env)
 {
-	pid_t paid;
+	/* pid_t paid; **/
 	ssize_t message;
 	size_t len;
-	char *buffer, *token = NULL;
-	char *args[1024], *delim = " \t\r\a";
+	char *buffer, **env_ptr, *token = NULL;
+	char *args[1024], *delim = " \n\t\r\a";
 	int idx;
 	(void)argc;
 
@@ -25,21 +26,38 @@ int main(int argc, char **env)
 			fflush(stdout);
 		}
 		message = getline(&buffer, &len, stdin);
-		if (message == -1)
+		if (message <= 0)
 		{
-			write(0, "\n", 2);
 			free(buffer);
-			exit(EXIT_FAILURE);
+			if (message == -1)
+			{
+				perror("getline");
+			}
+			exit(EXIT_SUCCESS);
 		}
 
-		if (buffer[message -1] == '\n')
-		{
-			buffer[message -1] = '\0';
-		}
-
-		idx = 0;
 		token = strtok(buffer, delim);
-		
+		if (token == NULL)
+		{
+			continue;
+		}
+		if (strcmp(token, "exit") == 0)
+		{
+			free(buffer);
+			break;
+		}
+		else if (strcmp(token, "env") == 0)
+		{
+			env_ptr = env;
+			while (*env_ptr)
+			{
+				printf("%s\n", *env_ptr);
+				env_ptr++;
+			}
+		}
+		else
+		{
+			idx = 0;
 		while (token != NULL)
 		{
 			args[idx] = token;
@@ -47,46 +65,17 @@ int main(int argc, char **env)
 			idx++;
 		}
 		args[idx] = NULL;
-
-		if (args[0] == NULL)/**For empty command, go back to the loop**/
-			continue;
-
-		if (strcmp(buffer, "exit") == 0)
+		
+		if (check_cmd(&args[0]))
 		{
-			exit(0);
+		exec_cmd(args, env);
 		}
-
-		if (strcmp(args[0], "env") == 0 ||
-				strcmp(args[0], "/bin/env") == 0)
-		{
-			print_env(env);
-			continue;
-		}
-
-		if (check_cmd(&args[0]) == 1)
-		{
-
-			paid = fork();
-			if (paid == -1)
-			{
-				perror("there was an error\n");
-				free(buffer);
-				exit(EXIT_FAILURE);
-			}
-
-			if (paid == 0)
-			{
-				exec_cmd(args, env);
-				perror("Exec failure");
-				exit(EXIT_FAILURE);
-			}
-
-			else
-				wait(NULL);
-		}
-		else
-			perror("./hsh");
 	}
+	}
+	free(buffer);
+	perror("./hsh");
 	return (0);
 }
+
+
 
