@@ -1,7 +1,9 @@
 #include "main.h"
 
 /**
- * exec_success - This is the function that will execute the command
+ * exec_cmd - This is the function that will execute the command
+ * @args: The argument
+ * @env: THe evironment variable
  * Return: Nothing
  */
 
@@ -59,5 +61,3 @@ char *exec_cmd(char **args, char **env)
         }
         return(args[0]);
 }
-
-
