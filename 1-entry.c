@@ -1,5 +1,6 @@
 #include "main.h"
 
+#define PATH_MAX 4096
 /**
  * main - This is the entry point of all functions
  * @argc: The is the arguments
@@ -9,84 +10,83 @@
 
 int main(int argc, char **env)
 {
-	pid_t paid;
-	ssize_t message;
-	size_t len;
-	char *buffer, *token = NULL;
-	char *args[1024], *delim = " \t\r\a";
-	int idx;
-	(void)argc;
+        pid_t paid;
+        ssize_t message;
+        size_t len;
+        char *buffer, *token = NULL;
+        char *args[1024], *delim = " \t\r\a";
+        int idx;
+        (void)argc;
 
-	while (1)
-	{
-		if (isatty(STDIN_FILENO) == 1)
-		{
-			write(1, "#cisfun$ ", 10);
-			fflush(stdout);
-		}
-		message = gb_getline(&buffer, &len, stdin);
-		if (message == -1)
-		{
-			write(0, "\n", 2);
-			free(buffer);
-			exit(EXIT_FAILURE);
-		}
+        while (1)
+        {
+                if (isatty(STDIN_FILENO) == 1)
+                {
+                        write(1, "#cisfun$ ", 10);
+                        fflush(stdout);
+                }
+                message = gb_getline(&buffer, &len, stdin);
+                if (message == -1)
+                {
+                        write(0, "\n", 2);
+                        free(buffer);
+                        exit(EXIT_FAILURE);
+                }
 
-		if (buffer[message -1] == '\n')
-		{
-			buffer[message -1] = '\0';
-		}
+                if (buffer[message -1] == '\n')
+                {
+                        buffer[message -1] = '\0';
+                }
 
-		idx = 0;
-		token = strtok(buffer, delim);
-		
-		while (token != NULL)
-		{
-			args[idx] = token;
-			token = strtok(NULL, delim);
-			idx++;
-		}
-		args[idx] = NULL;
+                idx = 0;
+                token = strtok(buffer, delim);
 
-		if (args[0] == NULL)/**For empty command, go back to the loop**/
-			continue;
+                while (token != NULL)
+                {
+                        args[idx] = token;
+                        token = strtok(NULL, delim);
+                        idx++;
+                }
+                args[idx] = NULL;
 
-		if (gb_strcmp(buffer, "exit") == 0)
-		{
-			exit(0);
-		}
+                if (args[0] == NULL)/**For empty command, go back to the loop**/
+                        continue;
 
-		if (gb_strcmp(args[0], "env") == 0 ||
-				strcmp(args[0], "/bin/env") == 0)
-		{
-			print_env(env);
-			continue;
-		}
+                if (gb_strcmp(buffer, "exit") == 0)
+                {
+                        exit(0);
+                }
 
-		if (check_cmd(&args[0]) == 1)
-		{
+                if (gb_strcmp(args[0], "env") == 0 ||
+                                strcmp(args[0], "/bin/env") == 0)
+                {
+                        print_env(env);
+                        continue;
+                }
 
-			paid = fork();
-			if (paid == -1)
-			{
-				error_prt(args[0], "fork");
-				free(buffer);
-				exit(EXIT_FAILURE);
-			}
+                if (check_cmd(&args[0]) == 1)
+                {
 
-			if (paid == 0)
-			{
-				exec_cmd(args, env);
-				perror("Exec failure");
-				exit(EXIT_FAILURE);
-			}
+                        paid = fork();
+                        if (paid == -1)
+                        {
+                                error_prt(args[0], "./fork");
+                                free(buffer);
+                                exit(EXIT_FAILURE);
+                        }
 
-			else
-				wait(NULL);
-		}
-		else
-			 error_prt(args[0], "./hsh");
-	}
-	return (0);
+                        if (paid == 0)
+                        {
+                                exec_cmd(args, env);
+                                perror("Exec failure");
+                                exit(EXIT_FAILURE);
+                        }
+
+                        else
+                                wait(NULL);
+                }
+                else
+                        error_prt(args[0], "./hsh");
+        }
+        return (0);
 }
-
