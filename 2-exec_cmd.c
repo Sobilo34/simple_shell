@@ -38,7 +38,7 @@ char *exec_cmd(char **args, char **env)
 	token = strtok(full_path, ":");
 	while (token != NULL)
 	{
-		our_path = malloc(strlen(token) + strlen(args[0]) + 2);
+		our_path = malloc(gb_strlen(token) + gb_strlen(args[0]) + 2);
 		if (our_path == NULL)
 		{
 			perror("Unable to allocate memory");

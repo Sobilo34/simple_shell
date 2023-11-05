@@ -24,7 +24,7 @@ int main(int argc, char **env)
 			write(1, "#cisfun$ ", 10);
 			fflush(stdout);
 		}
-		message = getline(&buffer, &len, stdin);
+		message = gb_getline(&buffer, &len, stdin);
 		if (message == -1)
 		{
 			write(0, "\n", 2);
@@ -51,12 +51,12 @@ int main(int argc, char **env)
 		if (args[0] == NULL)/**For empty command, go back to the loop**/
 			continue;
 
-		if (strcmp(buffer, "exit") == 0)
+		if (gb_strcmp(buffer, "exit") == 0)
 		{
 			exit(0);
 		}
 
-		if (strcmp(args[0], "env") == 0 ||
+		if (gb_strcmp(args[0], "env") == 0 ||
 				strcmp(args[0], "/bin/env") == 0)
 		{
 			print_env(env);
@@ -69,7 +69,7 @@ int main(int argc, char **env)
 			paid = fork();
 			if (paid == -1)
 			{
-				perror("there was an error\n");
+				error_prt(args[0], "fork");
 				free(buffer);
 				exit(EXIT_FAILURE);
 			}
@@ -85,7 +85,7 @@ int main(int argc, char **env)
 				wait(NULL);
 		}
 		else
-			perror("./hsh");
+			 error_prt(args[0], "./hsh");
 	}
 	return (0);
 }

@@ -24,20 +24,20 @@ int check_cmd(char **input)
 		return (1);
 
 
-	strcpy(path_bufa, path);
+	gb_strcpy(path_bufa, path);
 	token = strtok(path_bufa, ":");
 	while (token != NULL)
 	{
-		bufa = malloc(strlen(token) + strlen(*input) + 2);
+		bufa = malloc(gb_strlen(token) + gb_strlen(*input) + 2);
 		if (bufa == NULL)
 		{
 			perror(*input);
 			return (0);
 		}
 
-		strcpy(bufa, token);
-		strcat(bufa, "/");
-		strcat(bufa, *input);
+		gb_strcpy(bufa, token);
+		gb_strcat(bufa, "/");
+		gb_strcat(bufa, *input);
 
 		if (access(bufa, X_OK) == 0)
 		{
@@ -47,6 +47,5 @@ int check_cmd(char **input)
 		free(bufa);
 		token = strtok(NULL, ":");
 	}
-	perror(*input);
 	return (0);
 }
