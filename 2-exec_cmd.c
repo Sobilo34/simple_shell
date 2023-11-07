@@ -1,58 +1,67 @@
 #include "main.h"
 
 /**
- * exec_cmd - This is the function that will execute the command
- * @args: The argument
- * @env: THe evironment variable
+ * exec_cmd - This function will execute the command
+ * @args: The command and its arguments
+ * @env: The environment variables
  * Return: Nothing
  */
-
-char *exec_cmd(char **args, char **env)
+void exec_cmd(char **args, char **env)
 {
-        char *full_path = getenv("PATH"), *token, *our_path;
+    char *full_path = getenv("PATH"), *path, *token;
+    char our_path[1024];
 
-        if (args[0] == NULL)
+    if (args[0] == NULL)
+    {
+        perror("Command not provided");
+        exit(EXIT_FAILURE);
+    }
+
+    if (args[0][0] == '/')
+    {
+        if (access(args[0], X_OK) == 0)
         {
-                exit(0);
+            execve(args[0], args, env);
+            perror("Unable to execute");
+            exit(EXIT_FAILURE);
+        }
+        else
+        {
+            perror("Command not found");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    if (full_path == NULL)
+    {
+        perror("Unable to locate PATH environment variable");
+        exit(EXIT_FAILURE);
+    }
+
+    path = gb_strdup(full_path);
+    if (path == NULL)
+    {
+        perror("Memory allocation error");
+        exit(EXIT_FAILURE);
+    }
+
+    token = strtok(path, ":");
+    while (token != NULL)
+    {
+        gb_strcpy(our_path, token);
+        gb_strcat(our_path, "/");
+        gb_strcat(our_path, args[0]);
+
+        if (access(our_path, X_OK) == 0)
+        {
+            execve(our_path, args, env);
         }
 
-        if (args[0][0] == '/')
-        {
-                if (access(args[0], X_OK) == 0)
-                {
-                        execve(args[0], args, env);
-                        perror("Unable to execute\n");
-                        exit(EXIT_FAILURE);
-                }
-        }
+        token = strtok(NULL, ":");
+    }
 
-        if (full_path == NULL)
-        {
-                perror("Unable to locate env\n");
-                exit(EXIT_FAILURE);
-        }
-
-        token = gb_strtok(full_path, ":");
-        while (token != NULL)
-        {
-                our_path = malloc(gb_strlen(token) + gb_strlen(args[0]) + 2);
-                if (our_path == NULL)
-                {
-                        perror("Unable to allocate memory");
-                        exit(EXIT_FAILURE);
-                }
-                sprintf(our_path, "%s/%s", token, args[0]);
-
-                if (access(our_path, X_OK) == 0)
-                {
-                        execve(our_path, args, env);
-                        error_prt(args[0], "execve");
-                        free(our_path);
-                        exit(EXIT_FAILURE);
-                }
-
-                free(our_path);
-                token = gb_strtok(NULL, ":");
-        }
-        return(args[0]);
+    perror("Command not found");
+    free(path);
+    exit(EXIT_FAILURE);
 }
+

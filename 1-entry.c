@@ -14,7 +14,7 @@ int main(int argc, char **env)
         pid_t paid;
         ssize_t message;
         size_t len;
-        char *buffer, *token = NULL;
+        char *buffer, *token = NULL, *exit_code;
         char *args[1024], *delim = " \t\r\a";
         int idx, stat;
         (void)argc;
@@ -24,14 +24,13 @@ int main(int argc, char **env)
                 if (isatty(STDIN_FILENO) == 1)
                 {
                         write(1, "#cisfun$ ", 10);
-                        fflush(stdout);
                 }
                 message = gb_getline(&buffer, &len, stdin);
                 if (message == -1)
                 {
                         write(0, "\n", 2);
                         free(buffer);
-			exit(EXIT_FAILURE);	
+			exit(0);	
                 }
 
                 if (buffer[message -1] == '\n')
@@ -55,8 +54,8 @@ int main(int argc, char **env)
 
                 if (gb_strcmp(args[0], "exit") == 0)
                 {
-			/**exit_code = args[1];**/
-                        if (args[1] != NULL)
+			exit_code = args[1];
+                        if (exit_code != NULL)
 			{
 				stat = atoi(args[1]);
 				exit(stat);

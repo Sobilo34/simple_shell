@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stddef.h>
 
-char *exec_cmd(char **args, char **env);
+void exec_cmd(char **args, char **env);
 void print_env(char **env);
 extern char **environ;
 int check_cmd(char **input);
@@ -19,5 +19,6 @@ char *gb_strcat(char *str1, const char *str2);
 char *gb_strcpy(char *dest, const char *scr);
 void error_prt(char *cmd, char *name);
 char *gb_strtok(char *str, const char *delim);
+char *gb_strdup(const char *input);
 
 #endif

@@ -22,7 +22,7 @@ int check_cmd(char **input)
 
 
 	gb_strcpy(path_bufa, path);
-	token = strtok(path_bufa, ":");
+	token = gb_strtok(path_bufa, ":");
 	while (token != NULL)
 	{
 		bufa = malloc(gb_strlen(token) + gb_strlen(*input) + 2);
@@ -41,7 +41,7 @@ int check_cmd(char **input)
 			return (1);
 		}
 		free(bufa);
-		token = strtok(NULL, ":");
+		token = gb_strtok(NULL, ":");
 	}
 	return (0);
 }
