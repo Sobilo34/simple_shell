@@ -12,16 +12,13 @@ int check_cmd(char **input)
 	static char path_bufa[1024];
 
 	path = getenv("PATH");
-	if (path == NULL)
-	{
-		return (0);
-	}
-
 	if (path == NULL || *input == NULL || input == NULL)
 		return (0);
 
 	if (access(*input, X_OK) == 0 && (*input)[0] == '/')
+	{
 		return (1);
+	}
 
 
 	gb_strcpy(path_bufa, path);
@@ -41,7 +38,6 @@ int check_cmd(char **input)
 
 		if (access(bufa, X_OK) == 0)
 		{
-			*input = bufa;
 			return (1);
 		}
 		free(bufa);

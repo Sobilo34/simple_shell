@@ -13,7 +13,7 @@ char *exec_cmd(char **args, char **env)
 
         if (args[0] == NULL)
         {
-                exit(EXIT_FAILURE);
+                exit(0);
         }
 
         if (args[0][0] == '/')
@@ -24,11 +24,6 @@ char *exec_cmd(char **args, char **env)
                         perror("Unable to execute\n");
                         exit(EXIT_FAILURE);
                 }
-                else
-                {
-                        perror("Command not found\n");
-                        exit(EXIT_FAILURE);
-                }
         }
 
         if (full_path == NULL)
@@ -37,7 +32,7 @@ char *exec_cmd(char **args, char **env)
                 exit(EXIT_FAILURE);
         }
 
-        token = strtok(full_path, ":");
+        token = gb_strtok(full_path, ":");
         while (token != NULL)
         {
                 our_path = malloc(gb_strlen(token) + gb_strlen(args[0]) + 2);
@@ -57,7 +52,7 @@ char *exec_cmd(char **args, char **env)
                 }
 
                 free(our_path);
-                token = strtok(NULL, ":");
+                token = gb_strtok(NULL, ":");
         }
         return(args[0]);
 }

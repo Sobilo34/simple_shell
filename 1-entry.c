@@ -1,5 +1,6 @@
 #include "main.h"
 
+void bilalandgrace(void);
 #define PATH_MAX 4096
 /**
  * main - This is the entry point of all functions
@@ -15,7 +16,7 @@ int main(int argc, char **env)
         size_t len;
         char *buffer, *token = NULL;
         char *args[1024], *delim = " \t\r\a";
-        int idx;
+        int idx, stat;
         (void)argc;
 
         while (1)
@@ -30,7 +31,7 @@ int main(int argc, char **env)
                 {
                         write(0, "\n", 2);
                         free(buffer);
-                        exit(EXIT_FAILURE);
+			exit(EXIT_FAILURE);	
                 }
 
                 if (buffer[message -1] == '\n')
@@ -39,12 +40,12 @@ int main(int argc, char **env)
                 }
 
                 idx = 0;
-                token = strtok(buffer, delim);
+                token = gb_strtok(buffer, delim);
 
                 while (token != NULL)
                 {
                         args[idx] = token;
-                        token = strtok(NULL, delim);
+                        token = gb_strtok(NULL, delim);
                         idx++;
                 }
                 args[idx] = NULL;
@@ -52,9 +53,19 @@ int main(int argc, char **env)
                 if (args[0] == NULL)/**For empty command, go back to the loop**/
                         continue;
 
-                if (gb_strcmp(buffer, "exit") == 0)
+                if (gb_strcmp(args[0], "exit") == 0)
                 {
-                        exit(0);
+			/**exit_code = args[1];**/
+                        if (args[1] != NULL)
+			{
+				stat = atoi(args[1]);
+				exit(stat);
+			}
+
+			else
+			{
+				exit(0);
+			}
                 }
 
                 if (gb_strcmp(args[0], "env") == 0 ||

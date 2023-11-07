@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
- * our_getline - custom getline function
+ * our_getline - This is our getline function getline function
  * @line: line buffer
  * @len: length of buffer
  * @stream: stream to read from
