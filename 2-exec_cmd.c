@@ -45,7 +45,7 @@ void exec_cmd(char **args, char **env)
         exit(EXIT_FAILURE);
     }
 
-    token = strtok(path, ":");
+    token = gb_strtok(path, ":");
     while (token != NULL)
     {
         gb_strcpy(our_path, token);
@@ -57,7 +57,7 @@ void exec_cmd(char **args, char **env)
             execve(our_path, args, env);
         }
 
-        token = strtok(NULL, ":");
+        token = gb_strtok(NULL, ":");
     }
 
     perror("Command not found");
