@@ -20,5 +20,11 @@ char *gb_strcpy(char *dest, const char *scr);
 void error_prt(char *cmd, char *name);
 char *gb_strtok(char *str, const char *delim);
 char *gb_strdup(const char *input);
+int change_curr_dir(char **args);
+
+
+#define PATH_MAX 4096
+
+extern char **environ;
 
 #endif

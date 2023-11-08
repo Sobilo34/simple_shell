@@ -1,7 +1,7 @@
 #include "main.h"
 
 void bilalandgrace(void);
-#define PATH_MAX 4096
+
 /**
  * main - This is the entry point of all functions
  * @argc: The is the arguments
@@ -15,7 +15,8 @@ int main(int argc, char **env)
         ssize_t message;
         size_t len;
         char *buffer, *token = NULL, *exit_code;
-        char *args[1024], *delim = " \t\r\a";
+        char *args[1024], *delim = " \t\r\a", *prompt = "#cisfun:";
+	char curr_dir[PATH_MAX];
         int idx, stat;
         (void)argc;
 
@@ -23,7 +24,15 @@ int main(int argc, char **env)
         {
                 if (isatty(STDIN_FILENO) == 1)
                 {
-                        write(1, "#cisfun$ ", 10);
+			if (getcwd(curr_dir, PATH_MAX) == NULL)
+			{
+				perror("getcwd");
+				exit(EXIT_FAILURE);
+			}
+			write(STDOUT_FILENO, prompt, gb_strlen(prompt));
+                        write(STDOUT_FILENO, curr_dir, gb_strlen(curr_dir));
+			write(1, " ", 2);
+			fflush(stdout);
                 }
                 message = gb_getline(&buffer, &len, stdin);
                 if (message == -1)
@@ -73,6 +82,15 @@ int main(int argc, char **env)
                         print_env(env);
                         continue;
                 }
+
+		if (gb_strcmp(args[0], "cd") == 0)
+		{
+			if (change_curr_dir(args) == -1)
+			{
+				perror("cant change dir\n");
+			}
+			continue;
+		}
 
                 if (check_cmd(&args[0]) == 1)
                 {

@@ -8,27 +8,27 @@
 char *gb_strdup(const char *input)
 {
 	char *new_str;
-	size_t length, i;
+	size_t len, a;
 
-    if (input == NULL)
-    {
-        return NULL;
-    }
+	if (input == NULL)
+	{
+		return (NULL);
+	}
 
-    length = gb_strlen(input) + 1;
-    new_str = (char *)malloc(length * sizeof(char));
+	len = gb_strlen(input) + 1;
+	new_str = (char *)malloc(len * sizeof(char));
 
-    if (new_str == NULL)
-        return NULL;
+	if (new_str == NULL)
+		return (NULL);
 
-    i = 0;
-    while (input[i] != '\0')
-    {
-        new_str[i] = input[i];
-        i++;
-    }
-    new_str[i] = '\0';
+	a = 0;
+	while (input[a] != '\0')
+	{
+		new_str[a] = input[a];
+		a++;
+	}
+	new_str[a] = '\0';
 
-    return new_str;
+	return (new_str);
 }
 
