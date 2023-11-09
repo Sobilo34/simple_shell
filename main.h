@@ -9,7 +9,7 @@
 #include <stddef.h>
 
 #define PATH_MAX 4096
-#define MAX_ALIASES 100
+#define ALIAS_MAX 100
 
 void exec_cmd(char **args, char **env);
 void print_env(char **env);
@@ -24,13 +24,12 @@ void error_prt(char *cmd, char *name);
 char *gb_strtok(char *str, const char *delim);
 char *gb_strdup(const char *input);
 int change_curr_dir(char **args);
-int execute_command(char **args, char **env, int success);
-int split_commands(char *input, char *commands[]);
-void print_alias(char *name);
-void handle_alias_command(char **args);
+int exec_with_operator(char **args, char **env, int success);
+int split_cmds(char *input, char *cmd[]);
+void prt_alias(char *name);
+void handle_alias(char **args);
 void define_alias(char *name, char *value);
 
-extern char **environ;
 
 
 
@@ -40,7 +39,7 @@ typedef struct Alias
 	char *value;
 } Alias;
 
-Alias aliases[MAX_ALIASES];
+Alias aliases[ALIAS_MAX];
 
 
 #endif

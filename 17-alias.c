@@ -3,94 +3,111 @@
 int num_aliases = 0;
 
 /**
- * print_alias - This is the function that Prints alias
- * @name: The name of the alias
+ * prt_alias - This is the function that Prints alias
+ * @name: The name of the alias to be printed
+ * Return: Nothing
  */
-void print_alias(char *name)
+void prt_alias(char *name)
 {
 	int i;
 
-    for (i = 0; i < num_aliases; i++)
-    {
-        if (gb_strcmp(aliases[i].name, name) == 0)
+	for (i = 0; i < num_aliases; i++)
 	{
-            printf("%s='%s'\n", aliases[i].name, aliases[i].value);
-            return;
-        }
-    }
-    printf("Alias '%s' not found\n", name);
+		if (gb_strcmp(aliases[i].name, name) == 0)
+		{
+			write(STDOUT_FILENO, aliases[i].name,
+					gb_strlen(aliases[i].name));
+			write(STDOUT_FILENO, "='", 2);
+			write(STDOUT_FILENO, aliases[i].value,
+					gb_strlen(aliases[i].value));
+			write(STDOUT_FILENO, "'\n", 2);
+
+			return;
+		}
+	}
+	write(STDOUT_FILENO, "Alias '", 7);
+	write(STDOUT_FILENO, name, gb_strlen(name));
+	write(STDOUT_FILENO, "' not found\n", 12);
+
 }
 
 
 /**
- * handle_alias_command - Handle the alias command
- * @args: Array of command arguments
+ * handle_alias - THis is the function that handles the alias command
+ * @args: command arguments arrays
+ * Return: Nothing
  */
-void handle_alias_command(char **args)
+void handle_alias(char **args)
 {
 	int i;
 	char *name, *value;
 
-    if (args[1] == NULL)
-    {
-        /**Print all aliases**/
-        for (i = 0; i < num_aliases; i++)
+	if (args[1] == NULL)
 	{
-            printf("%s='%s'\n", aliases[i].name, aliases[i].value);
-        }
-    }
-    
-    else
-    {
-        /**Define or print specific aliases**/
-        for (i = 1; args[i] != NULL; i++)
+		for (i = 0; i < num_aliases; i++)
+		{
+			write(STDOUT_FILENO, aliases[i].name,
+				gb_strlen(aliases[i].name));
+			write(STDOUT_FILENO, "='", 2);
+			write(STDOUT_FILENO, aliases[i].value,
+				gb_strlen(aliases[i].value));
+			write(STDOUT_FILENO, "'\n", 2);
+		}
+	}
+
+	else
 	{
-            if (args[i + 1] != NULL && args[i + 1][0] == '=')
-	    {
-                /**Define an alias**/
-                name = gb_strtok(args[i], "=");
-                value = gb_strtok(NULL, "=");
-                define_alias(name, value);
-            }
-	    else
-	    {
-                /**Print an alias**/
-                print_alias(args[i]);
-            }
-        }
-    }
+		/**To define or print specific aliases**/
+		for (i = 1; args[i] != NULL; i++)
+		{
+			if (args[i + 1] != NULL && args[i + 1][0] == '=')
+			{
+				/**To define an alias**/
+				name = gb_strtok(args[i], "=");
+				value = gb_strtok(NULL, "=");
+				define_alias(name, value);
+			}
+			else
+			{
+				/**To print an alias**/
+				prt_alias(args[i]);
+			}
+		}
+	}
 }
 
 
 
 
 /**
- * define_alias - Define an alias
- * @name: Alias name
- * @value: Alias value
+ * define_alias - THis is a function that defines an alias
+ * @name: The name of the alias
+ * @value: The alias value
+ * Return: Nothing
  */
 void define_alias(char *name, char *value)
 {
 	int i;
 
-    if (num_aliases < MAX_ALIASES)
-    {
-        /**Check if the alias already exists, and if it does, update it**/
-        for (i = 0; i < num_aliases; i++)
+	if (num_aliases < ALIAS_MAX)
 	{
-            if (gb_strcmp(aliases[i].name, name) == 0)
-	    {
-                aliases[i].value = value;
-                return;
-            }
-        }
-        aliases[num_aliases].name = name;
-        aliases[num_aliases].value = value;
-        num_aliases++;
-    }
+		/**Update alias if there is**/
+		for (i = 0; i < num_aliases; i++)
+		{
+			if (gb_strcmp(aliases[i].name, name) == 0)
+			{
+				free(aliases[1].value);
+				aliases[i].value = gb_strdup(value);
+				return;
+			}
+		}
+		aliases[num_aliases].name = gb_strdup(name);
+		aliases[num_aliases].value = gb_strdup(value);
+		num_aliases++;
+	}
     
-    else
-    {
-        printf("Too many aliases defined\n");
-    }
+	else
+	{
+		write(STDOUT_FILENO, "Too many aliases defined\n", 30);
+	}
 }
