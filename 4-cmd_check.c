@@ -10,6 +10,17 @@ int check_cmd(char **input)
 {
 	char *path, *token, *bufa;
 	static char path_bufa[1024];
+	int i;
+	int num_aliases = 0;
+
+	for (i = 0; i < num_aliases; i++)
+	{
+		if (gb_strcmp(input[0], aliases[i].name) == 0)
+		{
+			input[0] = aliases[i].value; /**Replace the alias with its value**/
+			return (1);
+		}
+	}
 
 	path = getenv("PATH");
 	if (path == NULL || *input == NULL || input == NULL)

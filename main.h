@@ -8,6 +8,9 @@
 #include <string.h>
 #include <stddef.h>
 
+#define PATH_MAX 4096
+#define MAX_ALIASES 100
+
 void exec_cmd(char **args, char **env);
 void print_env(char **env);
 extern char **environ;
@@ -21,10 +24,23 @@ void error_prt(char *cmd, char *name);
 char *gb_strtok(char *str, const char *delim);
 char *gb_strdup(const char *input);
 int change_curr_dir(char **args);
-
-
-#define PATH_MAX 4096
+int execute_command(char **args, char **env, int success);
+int split_commands(char *input, char *commands[]);
+void print_alias(char *name);
+void handle_alias_command(char **args);
+void define_alias(char *name, char *value);
 
 extern char **environ;
+
+
+
+typedef struct Alias
+{
+	char *name;
+	char *value;
+} Alias;
+
+Alias aliases[MAX_ALIASES];
+
 
 #endif
