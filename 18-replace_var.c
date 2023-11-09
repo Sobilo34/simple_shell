@@ -7,3 +7,5 @@
  * @paid: THe child process
  *
  */
+
+char *replace_var(char *cmd, int stat, int pid) 

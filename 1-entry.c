@@ -167,14 +167,14 @@ int exec_with_operator(char **args, char **env, int success)
 
 	if (check_cmd(args) == 1)
 	{
-		pid_t child_pid = fork();
-		if (child_pid == -1)
+		pid_t paid = fork();
+		if (pais == -1)
 		{
 			error_prt(args[0], "fork");
 			return 0;
 		}
 
-		if (child_pid == 0)
+		if (paid == 0)
 		{
 			exec_cmd(args, env);
 			perror("Exec failure");
