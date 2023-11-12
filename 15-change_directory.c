@@ -25,12 +25,9 @@ int change_curr_dir(char **args)
 
 	if (access(path, X_OK) != 0)
 	{
-		if (path)
-		{
-			dprintf(STDERR_FILENO,
-			      "./hsh: 1: cd: can't cd to %s\n", path);
-			return (-1);
-		}
+		dprintf(STDERR_FILENO,
+			"./hsh: 1: cd: can't cd to %s\n", path);
+		return (-1);
 	}
 
 	if (chdir(path) != 0)

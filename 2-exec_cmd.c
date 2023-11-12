@@ -22,7 +22,6 @@ void exec_cmd(char **args, char **env)
         if (access(args[0], X_OK) == 0)
         {
             execve(args[0], args, env);
-            perror("Unable to execute");
             exit(EXIT_FAILURE);
         }
         else
@@ -55,6 +54,7 @@ void exec_cmd(char **args, char **env)
         if (access(our_path, X_OK) == 0)
         {
             execve(our_path, args, env);
+	    exit(EXIT_FAILURE);
         }
 
         token = gb_strtok(NULL, ":");
@@ -64,4 +64,3 @@ void exec_cmd(char **args, char **env)
     free(path);
     exit(EXIT_FAILURE);
 }
-
