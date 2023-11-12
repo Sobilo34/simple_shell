@@ -39,7 +39,7 @@ int _unsetenv(info_t *info, char *var)
 		a = starts_with(n->str, var);
 		if (a && *a == '=')
 		{
-			info->env_changed = delete_node_at_index(&(info->env), i);
+			info->env_changed = delete_node(&(info->env), i);
 			i = 0;
 			n = info->env;
 			continue;
@@ -71,13 +71,13 @@ int _setenv(info_t *info, char *var, char *value)
 	f = malloc(_strlen(var) + strlen(value) + 2);
 	if (!f)
 		return (1);
-	strcpy(f, var);
-	strcat(f, "=");
-	strcat(f, value);
+	gb_strcpy(f, var);
+	gb_strcat(f, "=");
+	gb_strcat(f, value);
 	node = info->env;
 	while (node)
 	{
-		a = starts_with(node->str, var);
+		a = start_(node->str, var);
 		if (a && *a == '=')
 		{
 			free(node->str);
@@ -87,9 +87,23 @@ int _setenv(info_t *info, char *var, char *value)
 		}
 		node = node->next;
 	}
-	add_node_end(&(info->env), f, 0);
+	node_end(&(info->env), f, 0);
 	free(f);
 	info->env_changed = 1;
 	return (0);
 }
 
+/**
+ * start_ - This function checks if nod starts with hays
+ * @hays: string to search
+ * @nod: the substring to find
+ *
+ * Return: returns the address of next char of hays or NULL
+ */
+char *start_(const char *hays, const char *nod)
+{
+	while (*nod)
+		if (*nod++ != *hays++)
+			return (NULL);
+	return ((char *)hays);
+}

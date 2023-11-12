@@ -14,7 +14,7 @@ int main(int argc, char **env)
         ssize_t message;
         size_t len;
         char *buffer, *token = NULL;
-        char *args[1024], *delim = " \t\r\a", *prompt = "#cisfun:";
+        char *args[1024], *delim = " \t\r\a\n", *prompt = "#cisfun:", *comm_start;
 	char *commands[1024];
 	int value, i;
 	char curr_dir[PATH_MAX];
@@ -49,6 +49,12 @@ int main(int argc, char **env)
 			buffer[message - 1] = '\0';
 		}
 
+		comm_start = strchr(buffer, '#');
+		if (comm_start != NULL)
+		{
+			*comm_start = '\0';
+		}
+
 		/*To split the input into commands**/
 		value = split_cmds(buffer, commands);
 		for (i = 0; i < value; i++)
@@ -62,8 +68,11 @@ int main(int argc, char **env)
 				token = gb_strtok(NULL, delim);
 				idx++;
 			}
+			args[idx] = NULL;
+
 			success = exec_with_operator(args, env, success);
 		}
+
 	}
 	return (0);
 }
@@ -103,8 +112,9 @@ int split_cmds(char *input, char *cmd[])
  */
 int exec_with_operator(char **args, char **env, int success)
 {
+	pid_t paid;
 	char *operator = NULL, *exit_code;
-	int i, a, exit_status, status,result;
+	int i, a, exit_status, status, result;
 
 	for (i = 0; args[i] != NULL; i++)
 	{
@@ -165,13 +175,16 @@ int exec_with_operator(char **args, char **env, int success)
 	}
 
 
+	/**pid = getpid();**/
 	if (check_cmd(args) == 1)
 	{
-		pid_t paid = fork();
+		/**args[0] = replace_implement(args[0], status, pid);**/
+
+		paid = fork();
 		if (paid == -1)
 		{
 			error_prt(args[0], "fork");
-			return 0;
+			exit(EXIT_FAILURE);
 		}
 
 		if (paid == 0)
