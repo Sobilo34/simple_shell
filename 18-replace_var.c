@@ -54,32 +54,50 @@ char *replace_implement(char *cmd, int stat, int pid)
 	char *output, input_stat[32], input_pid[32];
 
 	len = gb_strlen(cmd);
-	output_len = len + 10;
+	output_len = len + 30;
 	output = (char *)malloc(output_len);
+
+	if (output == NULL)
+	{
+		perror("error");
+		exit(EXIT_FAILURE);
+	}
 	output[0] = '\0';
 
-	for (a = 0; a < len; a++)
+	if (gb_strcmp(cmd, "&&") != 0 && gb_strcmp(cmd, "||") != 0)
 	{
-		if (cmd[a] == '$' && cmd[a + 1] == '?')
+		for (a = 0; a < len; a++)
 		{
-			int_to_str(stat, input_stat);
-			strcat(output, input_stat);
-			a++;
-		}
+			if (cmd[a] == '$' && cmd[a + 1] == '?')
+			{
+				int_to_str(stat, input_stat);
+				strcat(output, input_stat);
+				a++;
+			}
 
-		else if (cmd[a] == '$' && cmd[a + 1] == '$')
-		{
-			int_to_str(pid, input_pid);
-			strcat(output, input_pid);
-			a++;
-		}
+			else if (cmd[a] == '$' && cmd[a + 1] == '$')
+			{
+				int_to_str(pid, input_pid);
+				strcat(output, input_pid);
+				a++;
+			}
 
-		else
-		{
-			output = strncat(output, &cmd[a], 1);
+			else
+			{
+				/**output = strncat(output, &cmd[a], 1);**/
+				*output++ = cmd[a];
+				*output = '\0';
+			}
 		}
 	}
+
+	else
+	{
+		gb_strcpy(output, cmd);
+	}
+
 	printf("%s\n", output);
 
 	return (output);
 }
+

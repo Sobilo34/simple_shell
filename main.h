@@ -33,6 +33,7 @@ void handle_alias(char **args);
 void define_alias(char *name, char *value);
 char *replacer(const char *input, const char *prev, const char *present);
 char *replace_implement(char *cmd, int stat, int pid);
+void itoa(int num, char *str);
 
 
 typedef struct Alias

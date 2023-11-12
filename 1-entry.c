@@ -14,7 +14,7 @@ int main(int argc, char **env)
         ssize_t message;
         size_t len;
         char *buffer, *token = NULL;
-        char *args[1024], *delim = " \t\r\a", *prompt = "#cisfun:", *comm_start;
+        char *args[1024], *delim = " \t\r\a\n", *prompt = "#cisfun:", *comm_start;
 	char *commands[1024];
 	int value, i;
 	char curr_dir[PATH_MAX];
@@ -112,7 +112,7 @@ int split_cmds(char *input, char *cmd[])
  */
 int exec_with_operator(char **args, char **env, int success)
 {
-	pid_t pid, paid;
+	pid_t paid;
 	char *operator = NULL, *exit_code;
 	int i, a, exit_status, status, result;
 
@@ -175,10 +175,10 @@ int exec_with_operator(char **args, char **env, int success)
 	}
 
 
-	pid = getpid();
+	/**pid = getpid();**/
 	if (check_cmd(args) == 1)
 	{
-		args[0] = replace_implement(args[0], status, pid);
+		/**args[0] = replace_implement(args[0], status, pid);**/
 
 		paid = fork();
 		if (paid == -1)
