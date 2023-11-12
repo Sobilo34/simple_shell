@@ -179,8 +179,8 @@ int exec_with_operator(char **args, char **env, int success)
 	if (check_cmd(args) == 1)
 	{
 		args[0] = replace_implement(args[0], status, pid);
-		paid = fork();
 
+		paid = fork();
 		if (paid == -1)
 		{
 			error_prt(args[0], "fork");
