@@ -180,6 +180,7 @@ int exec_with_operator(char **args, char **env, int success)
 	{
 		args[0] = replace_implement(args[0], status, pid);
 		paid = fork();
+
 		if (paid == -1)
 		{
 			error_prt(args[0], "fork");
