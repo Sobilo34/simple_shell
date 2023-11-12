@@ -5,8 +5,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/types.h>
 #include <string.h>
 #include <stddef.h>
+#include <errno.h>
 
 #define PATH_MAX 4096
 #define ALIAS_MAX 100
@@ -29,8 +31,8 @@ int split_cmds(char *input, char *cmd[]);
 void prt_alias(char *name);
 void handle_alias(char **args);
 void define_alias(char *name, char *value);
-
-
+char *replacer(const char *input, const char *prev, const char *present);
+char *replace_implement(char *cmd, int stat, int pid);
 
 
 typedef struct Alias
