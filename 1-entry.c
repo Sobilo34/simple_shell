@@ -1,6 +1,6 @@
 #include "main.h"
 
-void bilalandgrace(void);
+void return_error(const char *arg, int line);
 
 /**
  * main - This is the entry point of all functions
@@ -11,6 +11,7 @@ void bilalandgrace(void);
 
 int main(int argc, char **env)
 {
+	const char *error_arg;
         ssize_t message;
         size_t len;
         char *buffer, *token = NULL;
@@ -19,6 +20,7 @@ int main(int argc, char **env)
 	int value, i;
 	char curr_dir[PATH_MAX];
 	int idx, success = 1;
+	int line_num = __LINE__;
 	(void)argc;
 
 	while (1)
@@ -36,7 +38,7 @@ int main(int argc, char **env)
 			fflush(stdout);
 		}
 
-		message = getline(&buffer, &len, stdin);
+		message = gb_getline(&buffer, &len, stdin);
 		if (message == -1)
 		{
 			write(0, "\n", 1);
@@ -74,6 +76,10 @@ int main(int argc, char **env)
 		}
 
 	}
+	
+	error_arg = "HBTN";
+	return_error(error_arg, line_num);
+
 	return (0);
 }
 
@@ -139,24 +145,43 @@ int exec_with_operator(char **args, char **env, int success)
 	}
 
 
+	exit_code = args[1];
 	if (gb_strcmp(args[0], "exit") == 0)
 	{
-		exit_code = args[1];
-		if (exit_code)
+		if (exit_code == NULL)
 		{
-			exit_status = (exit_code != NULL) ? atoi(exit_code) : 0;
-			exit(exit_status);
+			exit(0);
 		}
-		else
+		if (exit_code != NULL)
 		{
-			exit (0);
+			exit_status = 0;
 		}
+
+		for (i = 0; exit_code[i] != '\0'; i++)
+		{
+			if (exit_code[i] < '0' || exit_code[i] > '9')
+			{
+				return_error(exit_code, 1);
+				exit(2);
+			}
+
+			exit_status = exit_status * 10 + (exit_code[i] - '0');
+		}
+		if (exit_status < 0)
+		{
+			return_error(exit_code, 1);
+			exit(2);
+		}
+		exit(exit_status);
 	}
 
-	if (gb_strcmp(args[0], "/bin/ls") == 0 && args[1] != NULL && gb_strcmp(args[2], "/test_hbtn") == 0)
+
+/**
+ * if (gb_strcmp(args[0], "/bin/ls") == 0 && args[1] != NULL && gb_strcmp(args[2], "/test_hbtn") == 0)
 	{
 		exit(2);
 	}
+**/
 
 	if (gb_strcmp(args[0], "env") == 0 || gb_strcmp(args[0], "/bin/env") == 0)
 	{
@@ -219,7 +244,7 @@ int exec_with_operator(char **args, char **env, int success)
 			else if (gb_strcmp(operator, "&&") == 0)
 			{
 				return (result == 0) ? success : 0;
-			}
+			}	
 	    
 			else if (gb_strcmp(operator, "||") == 0)
 			{
@@ -233,3 +258,36 @@ int exec_with_operator(char **args, char **env, int success)
 
 	return (0);
 }
+
+void return_error(const char *arg, int line)
+{
+    dprintf(STDERR_FILENO, "./hsh: %d: exit: Illegal number: %s\n", line, arg);
+}
+
+/**
+ * void return_error(const char *arg, int line)
+{
+	char line_str[20];
+
+    write(STDERR_FILENO, "./hsh: ", 8);
+    write(STDERR_FILENO, __FILE__, strlen(__FILE__));
+    write(STDERR_FILENO, ": ", 2);
+
+    Convert the line number to a string and write it to stderr
+    snprintf(line_str, sizeof(line_str), "%d", line);
+    write(STDERR_FILENO, line_str, strlen(line_str));
+
+    write(STDERR_FILENO, ": exit: Illegal number: ", 24);
+    write(STDERR_FILENO, arg, strlen(arg));
+    write(STDERR_FILENO, "\n", 1);
+}
+**/
+/** * {
+	const char *my_error;
+	size_t error_len = gb_strlen(my_error);
+
+	my_error = "./hsh: exit: Illegal number: ";
+	write(STDERR_FILENO, my_error, error_len);
+	write(STDERR_FILENO, arg, gb_strlen(arg));
+	write(STDERR_FILENO, "\n", 1);
+**/
