@@ -39,7 +39,7 @@ int check_cmd(char **input)
 		bufa = malloc(gb_strlen(token) + gb_strlen(*input) + 2);
 		if (bufa == NULL)
 		{
-			perror(*input);
+			perror("gb_strtok");
 			return (0);
 		}
 

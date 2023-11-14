@@ -46,6 +46,7 @@ int main(int argc, char **env)
 			exit(0);
 		}
 
+		/**printf("Input buffer: %s\n", buffer);**/
 		if (buffer[message - 1] == '\n')
 		{
 			buffer[message - 1] = '\0';
@@ -59,6 +60,7 @@ int main(int argc, char **env)
 
 		/*To split the input into commands**/
 		value = split_cmds(buffer, commands);
+		/**printf("Number of commands: %d\n", value);**/
 		for (i = 0; i < value; i++)
 		{
 			idx = 0;
@@ -77,7 +79,6 @@ int main(int argc, char **env)
 
 	}
 	
-	error_arg = "HBTN";
 	return_error(error_arg, line_num);
 
 	return (0);
@@ -228,7 +229,7 @@ int exec_with_operator(char **args, char **env, int success)
 		if (paid == 0)
 		{
 			exec_cmd(args, env);
-			perror(args[0]);
+			error_prt(args[0], "fork");
 			exit(EXIT_FAILURE);
 		}
 		
@@ -259,35 +260,15 @@ int exec_with_operator(char **args, char **env, int success)
 	return (0);
 }
 
-void return_error(const char *arg, int line)
-{
-    dprintf(STDERR_FILENO, "./hsh: %d: exit: Illegal number: %s\n", line, arg);
-}
 
 /**
- * void return_error(const char *arg, int line)
+ * return__error - THis is a function that returns error message
+ * @arg: THe argument vector
+ * @line: THe line of the error message
+ * Return: Nothing
+ */
+
+void return_error(const char *arg, int line)
 {
-	char line_str[20];
-
-    write(STDERR_FILENO, "./hsh: ", 8);
-    write(STDERR_FILENO, __FILE__, strlen(__FILE__));
-    write(STDERR_FILENO, ": ", 2);
-
-    Convert the line number to a string and write it to stderr
-    snprintf(line_str, sizeof(line_str), "%d", line);
-    write(STDERR_FILENO, line_str, strlen(line_str));
-
-    write(STDERR_FILENO, ": exit: Illegal number: ", 24);
-    write(STDERR_FILENO, arg, strlen(arg));
-    write(STDERR_FILENO, "\n", 1);
+	dprintf(STDERR_FILENO, "./hsh: %d: exit: Illegal number: %s\n", line, arg);
 }
-**/
-/** * {
-	const char *my_error;
-	size_t error_len = gb_strlen(my_error);
-
-	my_error = "./hsh: exit: Illegal number: ";
-	write(STDERR_FILENO, my_error, error_len);
-	write(STDERR_FILENO, arg, gb_strlen(arg));
-	write(STDERR_FILENO, "\n", 1);
-**/
