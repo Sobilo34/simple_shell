@@ -13,7 +13,7 @@ void print_env(char **env)
 	paid = fork();
 	if (paid == -1)
 	{
-		perror("Unable to print env");
+		perror("fork");
 		exit(EXIT_FAILURE);
 	}
 
