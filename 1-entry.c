@@ -228,7 +228,7 @@ int exec_with_operator(char **args, char **env, int success)
 		if (paid == 0)
 		{
 			exec_cmd(args, env);
-			perror("Exec failure");
+			perror(args[0]);
 			exit(EXIT_FAILURE);
 		}
 		
