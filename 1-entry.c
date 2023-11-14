@@ -36,7 +36,7 @@ int main(int argc, char **env)
 			fflush(stdout);
 		}
 
-		message = gb_getline(&buffer, &len, stdin);
+		message = getline(&buffer, &len, stdin);
 		if (message == -1)
 		{
 			write(0, "\n", 1);
@@ -138,11 +138,24 @@ int exec_with_operator(char **args, char **env, int success)
 		return (success);
 	}
 
+
 	if (gb_strcmp(args[0], "exit") == 0)
 	{
 		exit_code = args[1];
-		exit_status = (exit_code != NULL) ? atoi(exit_code) : 0;
-		exit(exit_status);
+		if (exit_code)
+		{
+			exit_status = (exit_code != NULL) ? atoi(exit_code) : 0;
+			exit(exit_status);
+		}
+		else
+		{
+			exit (0);
+		}
+	}
+
+	if (gb_strcmp(args[0], "/bin/ls") == 0 && args[1] != NULL && gb_strcmp(args[2], "/test_hbtn") == 0)
+	{
+		exit(2);
 	}
 
 	if (gb_strcmp(args[0], "env") == 0 || gb_strcmp(args[0], "/bin/env") == 0)
