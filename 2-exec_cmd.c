@@ -14,7 +14,7 @@ void exec_cmd(char **args, char **env)
 	if (args[0] == NULL)
 	{
 		perror("Command not provided");
-		exit(EXIT_FAILURE);
+		exit(2);
 	}
 
 	if (args[0][0] == '/')
@@ -22,26 +22,26 @@ void exec_cmd(char **args, char **env)
 		if (access(args[0], X_OK) == 0)
 		{
 			execve(args[0], args, env);
-			exit(EXIT_FAILURE);
+			exit(2);
 		}
 		else
 		{
 			perror("execve");
-			exit(EXIT_FAILURE);
+			exit(2);
 		}
 	}
 
 	if (full_path == NULL)
 	{
 		perror("Unable to locate PATH environment variable");
-		exit(EXIT_FAILURE);
+		exit(2);
 	}
 
 	path = gb_strdup(full_path);
 	if (path == NULL)
 	{
 		perror("gb_strdup");
-		exit(EXIT_FAILURE);
+		exit(2);
 	}
 
 	token = gb_strtok(path, ":");

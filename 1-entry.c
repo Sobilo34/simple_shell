@@ -30,7 +30,7 @@ int main(int argc, char **env)
 			if (getcwd(curr_dir, PATH_MAX) == NULL)
 			{
 				perror("getcwd");
-				exit(EXIT_FAILURE);
+				exit(2);
 			}
 			write(STDOUT_FILENO, prompt, gb_strlen(prompt));
 			write(STDOUT_FILENO, curr_dir, gb_strlen(curr_dir));
@@ -223,14 +223,14 @@ int exec_with_operator(char **args, char **env, int success)
 		if (paid == -1)
 		{
 			error_prt(args[0], "fork");
-			exit(EXIT_FAILURE);
+			exit(2);
 		}
 
 		if (paid == 0)
 		{
 			exec_cmd(args, env);
 			error_prt(args[0], "fork");
-			exit(EXIT_FAILURE);
+			exit(2);
 		}
 		
 		else
