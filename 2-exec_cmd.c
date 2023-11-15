@@ -1,5 +1,6 @@
 #include "main.h"
 
+void exec_cmd(char **args, char **env);
 /**
  * exec_cmd - This function will execute the command
  * @args: The command and its arguments
@@ -59,7 +60,7 @@ void exec_cmd(char **args, char **env)
 
 		token = gb_strtok(NULL, ":");
 	}
-	
+
 	perror("./hsh");
 	free(path);
 	exit(EXIT_FAILURE);

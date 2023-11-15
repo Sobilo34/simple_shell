@@ -1,6 +1,6 @@
 #include "main.h"
 
-int num_aliases = 0;
+void prt_alias(char *name);
 
 /**
  * prt_alias - This is the function that Prints alias
@@ -105,7 +105,6 @@ void define_alias(char *name, char *value)
 		aliases[num_aliases].value = gb_strdup(value);
 		num_aliases++;
 	}
-    
 	else
 	{
 		write(STDOUT_FILENO, "Too many aliases defined\n", 30);

@@ -1,10 +1,6 @@
 #include "main.h"
 
 void return_error(const char *arg, int line);
-int compareStrings(const void *a, const void *b)
-{
-    return gb_strcmp(*(const char **)a, *(const char **)b);
-}
 
 /**
  * main - This is the entry point of all functions
@@ -16,10 +12,10 @@ int compareStrings(const void *a, const void *b)
 int main(int argc, char **env)
 {
 	const char *error_arg;
-        ssize_t message;
-        size_t len;
-        char *buffer, *token = NULL;
-        char *args[1024], *delim = " \t\r\a\n", *prompt = "#cisfun:", *comm_start;
+	ssize_t message;
+	size_t len;
+	char *buffer, *token = NULL;
+	char *args[1024], *delim = " \t\r\a\n", *prompt = "#cisfun:", *comm_start;
 	char *commands[1024];
 	int value, i;
 	char curr_dir[PATH_MAX];
@@ -80,14 +76,9 @@ int main(int argc, char **env)
 
 			success = exec_with_operator(args, env, success);
 		}
-	qsort(commands, value, sizeof(commands[0]), compareStrings);
-	for (i = 0; i < value; i++)
-	{
-		gb_print("%s\n", commands[i]);
 	}
-	}
-	
-	return_error(error_arg, line_num);
+
+	ret_error(error_arg, line_num);
 
 	return (0);
 }
@@ -97,14 +88,14 @@ int main(int argc, char **env)
 /**
  * split_cmds - This is the funtion that spilts string to different commands
  * @input: The user's input
- * @commands: The array to store the splitted commands
+ * @cmd: The array to store the splitted commands
  * Return: Value of the commads splitted
  */
 int split_cmds(char *input, char *cmd[])
 {
 	int value = 0;/**Number of commands**/
 	char *token;
-       
+
 	token = gb_strtok(input, ";"); /**split commands with ";"**/
 	while (token != NULL)
 	{
@@ -119,7 +110,8 @@ int split_cmds(char *input, char *cmd[])
 
 
 /**
- * exec_with_operator - This is the function that execute command and handle "&&" and "||" operators
+ * exec_with_operator - This is the function that execute command
+ * and handle "&&" and "||" operators
  * @args: command arguments array
  * @env: Array of environment variables
  * @success: Status of success of commands
@@ -139,7 +131,6 @@ int exec_with_operator(char **args, char **env, int success)
 			args[i] = NULL;
 			break;
 		}
-		
 		else if (gb_strcmp(args[i], "||") == 0)
 		{
 			operator = "||";
@@ -170,7 +161,7 @@ int exec_with_operator(char **args, char **env, int success)
 		{
 			if (exit_code[i] < '0' || exit_code[i] > '9')
 			{
-				return_error(exit_code, 1);
+				ret_error(exit_code, 1);
 				exit(2);
 			}
 
@@ -178,19 +169,12 @@ int exec_with_operator(char **args, char **env, int success)
 		}
 		if (exit_status < 0)
 		{
-			return_error(exit_code, 1);
+			ret_error(exit_code, 1);
 			exit(2);
 		}
 		exit(exit_status);
 	}
 
-
-/**
- * if (gb_strcmp(args[0], "/bin/ls") == 0 && args[1] != NULL && gb_strcmp(args[2], "/test_hbtn") == 0)
-	{
-		exit(2);
-	}
-**/
 
 	if (gb_strcmp(args[0], "env") == 0 || gb_strcmp(args[0], "/bin/env") == 0)
 	{
@@ -203,10 +187,10 @@ int exec_with_operator(char **args, char **env, int success)
 		if (change_curr_dir(args) == -1)
 		{
 			perror("can't change dir");
-			return 0;
+			return (0);
 		}
 		else
-			return 1;
+			return (1);
 	}
 
 	for (a = 0; a < ALIAS_MAX; a++)
@@ -240,7 +224,6 @@ int exec_with_operator(char **args, char **env, int success)
 			error_prt(args[0], "fork");
 			exit(2);
 		}
-		
 		else
 		{
 			wait(&status);
@@ -249,12 +232,10 @@ int exec_with_operator(char **args, char **env, int success)
 			{
 				return (result);
 			}
-			
 			else if (gb_strcmp(operator, "&&") == 0)
 			{
-				return (result == 0) ? success : 0;
-			}	
-	    
+				return ((result == 0) ? success : 0);
+			}
 			else if (gb_strcmp(operator, "||") == 0)
 			{
 				return ((result == 0) ? 0 : success);
@@ -270,13 +251,13 @@ int exec_with_operator(char **args, char **env, int success)
 
 
 /**
- * return__error - THis is a function that returns error message
+ * ret_error - THis is a function that returns error message
  * @arg: THe argument vector
  * @line: THe line of the error message
  * Return: Nothing
  */
 
-void return_error(const char *arg, int line)
+void ret_error(const char *arg, int line)
 {
 	dprintf(STDERR_FILENO, "./hsh: %d: exit: Illegal number: %s\n", line, arg);
 }

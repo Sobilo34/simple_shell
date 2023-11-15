@@ -1,8 +1,8 @@
 #include "main.h"
 
 /**
- * bg_strdup - Duplicate a string.
- * @str: The string to be duplicated.
+ * gb_strdup - Duplicate a string.
+ * @input: The string to be duplicated.
  * Return: A duplicated string or NULL on failure.
  */
 char *gb_strdup(const char *input)

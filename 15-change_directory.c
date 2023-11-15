@@ -1,5 +1,6 @@
 #include "main.h"
 
+int change_curr_dir(char **args);
 /**
  * change_curr_dir - This is the fucntion that changes the
  * current working directory to another

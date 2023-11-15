@@ -1,10 +1,22 @@
 #include "main.h"
+char *replace_implement(char *cmd, int stat, int pid);
 
+/**
+ * int_to_str : function that converts integer to string.
+ * @num: int to be converted
+ * @str:  string thats been converted
+ */
 void int_to_str(int num, char *str)
 {
-    snprintf(str, 32, "%d", num);
+	snprintf(str, 32, "%d", num);
 }
-
+/**
+ * replacer : This is the function that replace variable
+ * @input: the variable to be replaced
+ * @prev: old variable
+ * @present: new variable
+ * Return: 1 if replaced, 0 if not.
+ */
 char *replacer(const char *input, const char *prev, const char *present)
 {
 	int a, count = 0;
@@ -41,11 +53,12 @@ char *replacer(const char *input, const char *prev, const char *present)
 }
 
 /**
- * replace_implement - This is the unctio that replace $?, $$, and other variables
+ * replace_implement - This is the unctio that replace $?,
+ * $$, and other variables
  * @cmd: The command
  * @stat: THe wait status
- * @paid: THe child process
- *
+ * @pid: THe child process
+ * Return: reyurns 1 on sucess, 0 if otherwise
  */
 
 char *replace_implement(char *cmd, int stat, int pid)

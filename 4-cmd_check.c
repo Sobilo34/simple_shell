@@ -1,8 +1,10 @@
 #include "main.h"
+
+int check_cmd(char **input);
 /**
  * check_cmd - check if the command exist in the
  * path, if it does not creat a path and append it to the directory
- * @str: pointer to the command.
+ * @input: pointer to the command.
  *
  * Return: return a status value of 1 on success and 0 on failure.
  */

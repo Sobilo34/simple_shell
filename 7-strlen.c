@@ -1,7 +1,8 @@
 #include "main.h"
 
 /**
- * _strlen - Thiis is a function that is used to calculate the number of chars in a string
+ * gb_strlen - Thiis is a function that is used to
+ * calculate the number of chars in a string
  * @input: The string to be calculated
  * Return: The value of the calulation
  */
