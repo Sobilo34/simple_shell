@@ -73,15 +73,22 @@ int main(int argc, char **env)
 				idx++;
 			}
 			args[idx] = NULL;
-
+	/**	if (gb_strcmp(args[0], "setenv") == 0 && args[1] != NULL && args[2] != NULL)
+		{
+			gb_setenv(env, args[1], args[2]);
+		}else if (gb_strcmp(args[0], "unsetenv") == 0 && args[1] != NULL)
+		{
+			gb_unsetenv(env, args[1]);
+		}
+		else
+		{
+*/
 			success = exec_with_operator(args, env, success);
 		}
-
-	}
-	
+		}
 	return_error(error_arg, line_num);
-
 	return (0);
+
 }
 
 
@@ -97,12 +104,20 @@ int split_cmds(char *input, char *cmd[])
 	int value = 0;/**Number of commands**/
 	char *token;
        
-	token = gb_strtok(input, ";"); /**split commands with ";"**/
+	if (input == NULL || input[0] == '\0')
+		return (0);
+
+	token = gb_strtok(input, " "); /**split commands with " "**/
 	while (token != NULL)
 	{
-		cmd[value] = token;
+		cmd[value] = gb_strdup(token);
+		if (cmd[value] == NULL)
+		{
+			perror("gb_strdup");
+			exit(EXIT_FAILURE);
+		}
 		value++;
-		token = gb_strtok(NULL, ";");
+		token = gb_strtok(NULL, " ");
 	}
 
 	return (value);
@@ -198,7 +213,7 @@ int exec_with_operator(char **args, char **env, int success)
 			return 0;
 		}
 		else
-			return 1;
+			return (1);
 	}
 
 	for (a = 0; a < ALIAS_MAX; a++)

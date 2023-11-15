@@ -1,8 +1,5 @@
 #include "main.h"
 
-#define INITIAL_BUFFER_SIZE 1024
-
-
 /**
  * our_getline - This is our getline function getline function
  * @line: line buffer
@@ -19,13 +16,10 @@ ssize_t gb_getline(char **line_ptr, size_t *len_siz, FILE *stream)
 
 	if (line == NULL || size == 0)
 	{
-		size = INITIAL_BUFFER_SIZE;
+		size = 1024;
 		line = malloc(size);
 		if (line == NULL)
-		{
-			perror("malloc");
 			return (-1);
-		}
 	}
 
 	while (1)
