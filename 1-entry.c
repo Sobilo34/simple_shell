@@ -1,6 +1,10 @@
 #include "main.h"
 
 void return_error(const char *arg, int line);
+int compareStrings(const void *a, const void *b)
+{
+    return gb_strcmp(*(const char **)a, *(const char **)b);
+}
 
 /**
  * main - This is the entry point of all functions
@@ -76,7 +80,11 @@ int main(int argc, char **env)
 
 			success = exec_with_operator(args, env, success);
 		}
-
+	qsort(commands, value, sizeof(commands[0]), compareStrings);
+	for (i = 0; i < value; i++)
+	{
+		gb_print("%s\n", commands[i]);
+	}
 	}
 	
 	return_error(error_arg, line_num);
