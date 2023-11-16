@@ -25,7 +25,7 @@ ssize_t gb_getline(char **line_ptr, size_t *len_siz, FILE *stream)
 
 	while (1)
 	{
-		the_getline = fgets(line + p_len, (int)size - p_len, stream);
+		the_getline = fgets(line + p_len, (int)size, stream);
 		if (the_getline == NULL)
 		{
 			if (p_len == 0)
