@@ -12,7 +12,7 @@ ssize_t gb_getline(char **line_ptr, size_t *len_siz, FILE *stream)
 {
 	ssize_t read_char, p_len = 0;
 	char *the_getline;
-	char *line = *line_ptr;
+	char *line = *line_ptr, *new_line;
 	size_t size = *len_siz;
 
 	if (line == NULL || size == 0)
@@ -25,7 +25,7 @@ ssize_t gb_getline(char **line_ptr, size_t *len_siz, FILE *stream)
 
 	while (1)
 	{
-		the_getline = fgets(line + p_len, (int)size, stream);
+		the_getline = fgets(line + p_len, (int)size - p_len, stream);
 		if (the_getline == NULL)
 		{
 			if (p_len == 0)
@@ -58,11 +58,15 @@ ssize_t gb_getline(char **line_ptr, size_t *len_siz, FILE *stream)
 		if (size - p_len <= 1)
 		{
 			size *= 2;
-			line = realloc(line, size);
-			if (line == NULL)
+			new_line = realloc(line, size);
+			if (new_line == NULL)
 			{
+				free(line);
+				*line_ptr = NULL;
+				*len_siz = 0;
 				return (-1);
 			}
+			line = new_line;
 		}
 	}
 }
