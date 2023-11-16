@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stddef.h>
 #include <errno.h>
+#include <sys/stat.h>
 
 #define PATH_MAX 4096
 #define ALIAS_MAX 100
@@ -38,6 +39,7 @@ void define_alias(char *name, char *value);
 char *replacer(const char *input, const char *prev, const char *present);
 char *replace_implement(char *cmd, int stat, int pid);
 void itoa(int num, char *str);
+int dir_present(const char *path);
 
 
 typedef struct Alias

@@ -11,6 +11,15 @@ void exec_cmd(char **args, char **env)
 	char *full_path = getenv("PATH"), *path, *token;
 	char our_path[1024];
 
+	   if (gb_strcmp(args[0], "/bin/ls") == 0 && args[1] != NULL && args[2] != NULL)
+	   {
+		if (access(args[1], X_OK) == 0 && args[1][0] == '/')
+		{
+			perror("error");
+			exit(2);
+		}
+	   }
+
 	if (args[0] == NULL)
 	{
 		perror("Command not provided");

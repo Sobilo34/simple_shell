@@ -80,13 +80,12 @@ int main(int argc, char **env)
 		{
 			gb_unsetenv(env, args[1]);
 		}
-		else
-		{
 */
 			success = exec_with_operator(args, env, success);
 		}
-		}
+	}
 	return_error(error_arg, line_num);
+
 	return (0);
 
 }
@@ -192,13 +191,6 @@ int exec_with_operator(char **args, char **env, int success)
 	}
 
 
-/**
- * if (gb_strcmp(args[0], "/bin/ls") == 0 && args[1] != NULL && gb_strcmp(args[2], "/test_hbtn") == 0)
-	{
-		exit(2);
-	}
-**/
-
 	if (gb_strcmp(args[0], "env") == 0 || gb_strcmp(args[0], "/bin/env") == 0)
 	{
 		print_env(env);
@@ -232,6 +224,7 @@ int exec_with_operator(char **args, char **env, int success)
 	/**pid = getpid();**/
 	if (check_cmd(args) == 1)
 	{
+
 		/**args[0] = replace_implement(args[0], status, pid);**/
 
 		paid = fork();
@@ -270,7 +263,9 @@ int exec_with_operator(char **args, char **env, int success)
 	}
 
 	else
-		error_prt(args[0], "./hsh");
+	{
+		perror("./hsh");
+	}
 
 	return (0);
 }

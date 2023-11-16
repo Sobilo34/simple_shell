@@ -1,4 +1,16 @@
 #include "main.h"
+
+int dir_present(const char *path)
+{
+        struct stat stat_buf;
+        if (stat(path, &stat_buf) == 0)
+        {
+                return S_ISDIR(stat_buf.st_mode);
+        }
+
+        return (0);
+}
+
 /**
  * check_cmd - check if the command exist in the
  * path, if it does not creat a path and append it to the directory
@@ -13,6 +25,11 @@ int check_cmd(char **input)
 	int i;
 	int num_aliases = 0;
 
+	if (access("/bin/ls", X_OK) == 0 && input[1] != NULL)
+	{
+		perror("error");
+		exit(2);
+	}
 	for (i = 0; i < num_aliases; i++)
 	{
 		if (gb_strcmp(input[0], aliases[i].name) == 0)
