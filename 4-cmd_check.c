@@ -53,8 +53,10 @@ int check_cmd(char **input)
 
 		if (access(bufa, X_OK) == 0)
 		{
+			free(bufa);
 			return (1);
 		}
+
 		free(bufa);
 		token = gb_strtok(NULL, ":");
 	}
