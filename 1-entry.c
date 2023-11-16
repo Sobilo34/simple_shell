@@ -84,7 +84,6 @@ int main(int argc, char **env)
 
 			success = exec_with_operator(args, env, success);
 		}
-		free(buffer);
 	}
 
 	ret_error(error_arg, line_num);

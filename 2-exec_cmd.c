@@ -13,15 +13,6 @@ void exec_cmd(char **args, char **env)
 	char our_path[1024];
 
 
-if (gb_strcmp(args[0], "/bin/ls") == 0 && args[1] != NULL)
-{
-	if (access(args[1], X_OK) == 0 && args[1][0] == '/')
-	{
-			perror("./hsh");
-			exit(2);
-	}
-}
-
 	if (args[0] == NULL)
 	{
 		perror("Command not provided");
@@ -35,6 +26,7 @@ if (gb_strcmp(args[0], "/bin/ls") == 0 && args[1] != NULL)
 			execve(args[0], args, env);
 			exit(2);
 		}
+
 		else
 		{
 			perror("execve");
