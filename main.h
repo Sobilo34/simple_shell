@@ -17,7 +17,7 @@ void exec_cmd(char **args, char **env);
 void print_env(char **env);
 extern char **environ;
 int check_cmd(char **input);
-/*ssize_t gb_getline(char **line_ptr, size_t *len_siz, FILE *stream);*/
+ssize_t gb_getline(char **line_ptr, size_t *len_siz, FILE *stream);
 size_t gb_strlen(const char *input);
 void ret_error(const char *arg, int line);
 int gb_strcmp(const char *str1, const char *str2);
@@ -39,7 +39,7 @@ void define_alias(char *name, char *value);
 char *replacer(const char *input, const char *prev, const char *present);
 char *replace_implement(char *cmd, int stat, int pid);
 void itoa(int num, char *str);
-int gb_getline(char **lineptr, size_t *n, FILE *stream);
+/*int gb_getline(char **lineptr, size_t *n, FILE *stream);*/
 
 typedef struct Alias
 {

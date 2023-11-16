@@ -14,8 +14,9 @@ int main(int argc, char **env)
 	const char *error_arg;
 	ssize_t message;
 	size_t len;
-	char *buffer, *token = NULL;
-	char *args[1024], *delim = " \t\r\a\n", *prompt = "#cisfun:", *comm_start;
+	char *buffer = NULL, *token = NULL;
+	char *args[1024];
+	char *delim = " \t\r\a\n", *prompt = "#cisfun:", *comm_start;
 	char *commands[1024];
 	int value, i;
 	char curr_dir[PATH_MAX];
@@ -76,6 +77,7 @@ int main(int argc, char **env)
 
 			success = exec_with_operator(args, env, success);
 		}
+		free(buffer);
 	}
 
 	ret_error(error_arg, line_num);
