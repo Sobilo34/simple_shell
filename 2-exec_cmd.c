@@ -17,7 +17,7 @@ if (gb_strcmp(args[0], "/bin/ls") == 0 && args[1] != NULL)
 {
 	if (access(args[1], X_OK) == 0 && args[1][0] == '/')
 	{
-			perror("error");
+			perror("./hsh");
 			exit(2);
 	}
 }
