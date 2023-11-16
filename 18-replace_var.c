@@ -2,20 +2,20 @@
 char *replace_implement(char *cmd, int stat, int pid);
 
 /**
- * int_to_str : function that converts integer to string.
- * @num: int to be converted
- * @str:  string thats been converted
+ * int_to_str - Converts an integer to a string.
+ * @num: The integer to be converted.
+ * @str: The string to store the result.
  */
 void int_to_str(int num, char *str)
 {
 	snprintf(str, 32, "%d", num);
 }
 /**
- * replacer : This is the function that replace variable
- * @input: the variable to be replaced
- * @prev: old variable
- * @present: new variable
- * Return: 1 if replaced, 0 if not.
+ * replacer - Replaces occurrences of a substring with another substring.
+ * @input: The input string.
+ * @prev: The substring to be replaced.
+ * @present: The new substring.
+ * Return: A newly allocated string with replacements.
  */
 char *replacer(const char *input, const char *prev, const char *present)
 {
@@ -52,13 +52,13 @@ char *replacer(const char *input, const char *prev, const char *present)
 	return (output);
 }
 
+
 /**
- * replace_implement - This is the unctio that replace $?,
- * $$, and other variables
- * @cmd: The command
- * @stat: THe wait status
- * @pid: THe child process
- * Return: reyurns 1 on sucess, 0 if otherwise
+ * replace_implement - Replaces special variables in a command string.
+ * @cmd: The command string.
+ * @stat: The wait status.
+ * @pid: The child process ID.
+ * Return: A newly allocated string with replacements.
  */
 
 char *replace_implement(char *cmd, int stat, int pid)
