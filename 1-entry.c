@@ -39,7 +39,7 @@ int main(int argc, char **env)
 			fflush(stdout);
 		}
 
-		message = gb_getline(&buffer, &len, stdin);
+		message = getline(&buffer, &len, stdin);
 		if (message == -1)
 		{
 			write(0, "\n", 1);
