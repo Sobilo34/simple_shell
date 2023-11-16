@@ -74,9 +74,7 @@ int main(int argc, char **env)
 				idx++;
 			}
 			args[idx] = NULL;
-<<<<<<< HEAD
-	/**	if (gb_strcmp(args[0], "setenv") == 0 && args[1] != NULL && args[2] != NULL)
-		{
+	/**	{
 			gb_setenv(env, args[1], args[2]);
 		}else if (gb_strcmp(args[0], "unsetenv") == 0 && args[1] != NULL)
 		{
@@ -253,6 +251,8 @@ int exec_with_operator(char **args, char **env, int success)
 				return ((result == 0) ? 0 : success);
 			}
 		}
+	}
+	
 	else
 		perror("./hsh");
 

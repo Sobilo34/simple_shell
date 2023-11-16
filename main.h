@@ -40,12 +40,8 @@ void define_alias(char *name, char *value);
 char *replacer(const char *input, const char *prev, const char *present);
 char *replace_implement(char *cmd, int stat, int pid);
 void itoa(int num, char *str);
-<<<<<<< HEAD
-int dir_present(const char *path);
 
-=======
 /*int gb_getline(char **lineptr, size_t *n, FILE *stream);*/
->>>>>>> 9bcfd610db6fb39beff1e798ac3af1d9a0a35387
 
 typedef struct Alias
 {
