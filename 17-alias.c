@@ -9,7 +9,7 @@ void prt_alias(char *name);
  */
 void prt_alias(char *name)
 {
-	int i;
+	int i, num_aliases = 0;
 
 	for (i = 0; i < num_aliases; i++)
 	{
@@ -40,6 +40,7 @@ void prt_alias(char *name)
 void handle_alias(char **args)
 {
 	int i;
+	int num_aliases = 0;
 	char *name, *value;
 
 	if (args[1] == NULL)
@@ -88,6 +89,7 @@ void handle_alias(char **args)
 void define_alias(char *name, char *value)
 {
 	int i;
+	int num_aliases = 0;
 
 	if (num_aliases < ALIAS_MAX)
 	{

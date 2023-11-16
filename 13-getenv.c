@@ -52,8 +52,7 @@ int gb_setenv(const char *variable, const char *value, char ***env)
 		gb_print("setenv: Memory allocation failure\n");
 		return (-1);
 	}
-	i = 0;
-	while ((*env)[i] != NULL; i++)
+	for (i = 0; (*env)[i] != NULL; i++)
 	{
 		if (gb_strstartswith((*env)[i], variable))
 		{

@@ -214,14 +214,14 @@ int exec_with_operator(char **args, char **env, int success)
 		paid = fork();
 		if (paid == -1)
 		{
-			error_prt(args[0], "fork");
+			perror("fork");
 			exit(2);
 		}
 
 		if (paid == 0)
 		{
 			exec_cmd(args, env);
-			error_prt(args[0], "fork");
+			perror("fork");
 			exit(2);
 		}
 		else
@@ -244,7 +244,7 @@ int exec_with_operator(char **args, char **env, int success)
 	}
 
 	else
-		error_prt(args[0], "./hsh");
+		perror("./hsh");
 
 	return (0);
 }
