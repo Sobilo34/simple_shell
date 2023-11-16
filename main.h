@@ -40,6 +40,8 @@ void define_alias(char *name, char *value);
 char *replacer(const char *input, const char *prev, const char *present);
 char *replace_implement(char *cmd, int stat, int pid);
 void itoa(int num, char *str);
+int pipe_dey(char **args);
+void exec_pipe(char **args);
 
 /*int gb_getline(char **lineptr, size_t *n, FILE *stream);*/
 
