@@ -1,5 +1,6 @@
 #include "main.h"
 
+int change_curr_dir(char **args);
 /**
  * change_curr_dir - This is the fucntion that changes the
  * current working directory to another
@@ -25,34 +26,29 @@ int change_curr_dir(char **args)
 
 	if (access(path, X_OK) != 0)
 	{
-		gb_print("./hsh: 1: cd: can't cd to %.*s\n", (int)gb_strlen(path), path);
+		dprintf(STDERR_FILENO,
+			"./hsh: 1: cd: can't cd to %s\n", path);
 		return (-1);
 	}
 
 	if (chdir(path) != 0)
 	{
-		perror("./hsh");
 		return (-1);
 	}
 
 	if (getcwd(prev_dir, sizeof(curr_dir)) == NULL)
 	{
-		return (-3);
+		return (-1);
 	}
 
-	if (gb_setenv("OLDPWD", prev_dir, &environ) != 0)
-	{
-		perror("./hsh");
-		return (-2);
-	}
+	if (setenv("OLDPWD", prev_dir, 1) != 0)
+		return (-1);
+
 	if (getcwd(curr_dir, sizeof(curr_dir)) == NULL)
-		return (-3);
+		return (-1);
 
-	if (gb_setenv("PWD", curr_dir, &environ) != 0)
-	{
-		perror("./hsh");
-		return (-2);
-	}
+	if (setenv("PWD", curr_dir, 1) != 0)
+		return (-1);
 
 	return (0);
 }

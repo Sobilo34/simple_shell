@@ -1,7 +1,8 @@
 #include "main.h"
 
 /**
- * gb_strcat - This is a function that will be used for concatenation of strings
+ * gb_strcat - This is a function that will be used for
+ * concatenation of strings
  * @str2: This is the string to append to another
  * @str1: This is the string to be appended to
  * Return: A pointer/address of the added strings

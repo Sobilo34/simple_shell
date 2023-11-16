@@ -1,5 +1,5 @@
 #include "main.h"
-
+char *gb_strtok(char *input, const char *delimt);
 /**
  * gb_strtok - THis is our custom strtok function used to tokenize strings
  * @input: THe string input by  user to be tokenized
@@ -9,7 +9,7 @@
 
 char *gb_strtok(char *input, const char *delimt)
 {
-	static char *ptr = NULL;/**Use a static pointer to save the tokens tokenized**/
+	static char *ptr;/**Use a static char to save the tokens tokenized**/
 	char *token = NULL;
 	size_t a, b;
 
@@ -35,7 +35,8 @@ char *gb_strtok(char *input, const char *delimt)
 		a++;
 	}
 
-	while (*ptr)/** Checks the ptr and find the character that match the delimeter **/
+	while (*ptr)/** Checks the ptr and find the character
+		      *that match the delimeter **/
 	{
 		b = 0;
 		while (delimt[b])

@@ -1,5 +1,6 @@
 #include "main.h"
 
+<<<<<<< HEAD
 int dir_present(const char *path)
 {
         struct stat stat_buf;
@@ -11,10 +12,13 @@ int dir_present(const char *path)
         return (0);
 }
 
+=======
+int check_cmd(char **input);
+>>>>>>> 9bcfd610db6fb39beff1e798ac3af1d9a0a35387
 /**
  * check_cmd - check if the command exist in the
  * path, if it does not creat a path and append it to the directory
- * @str: pointer to the command.
+ * @input: pointer to the command.
  *
  * Return: return a status value of 1 on success and 0 on failure.
  */

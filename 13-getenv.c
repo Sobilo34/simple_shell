@@ -27,7 +27,7 @@ void gb_print(const char *format, ...)
 }
 
 /**
- * set_env_variable - Set or modify an environment variable
+ * gb_setenv - Set or modify an environment variable
  * @variable: The name of the environment variable
  * @value: The value to set for the environment variable
  * @env: The environment variables
@@ -54,22 +54,23 @@ int gb_setenv(const char *variable, const char *value, char ***env)
 	}
 	for (i = 0; (*env)[i] != NULL; i++)
 	{
-		 if (gb_strstartswith((*env)[i], variable))
-		 {
-			 free((*env)[i]);
-			 (*env)[i] = env_variable;
-			 return (0);
-		 }
+		if (gb_strstartswith((*env)[i], variable))
+		{
+			free((*env)[i]);
+			(*env)[i] = env_variable;
+			return (0);
+		}
 	}
+
 	*env = realloc(*env, (i + 2) * sizeof(char *));
-	 if (*env == NULL)
-	 {
-		  gb_print("setenv: Memory allocation failure\n");
-        free(env_variable);
-        return (-1);
-	 }
-	 (*env)[i] = env_variable;
-	  (*env)[i + 1] = NULL;
+	if (*env == NULL)
+	{
+		gb_print("setenv: Memory allocation failure\n");
+		free(env_variable);
+		return (-1);
+	}
+		(*env)[i] = env_variable;
+		(*env)[i + 1] = NULL;
 		return (0);
 }
 
@@ -89,18 +90,19 @@ int gb_unsetenv(const char *variable, char ***env)
 	if (variable == NULL || env == NULL || *env == NULL)
 	{
 		gb_print("unsetenv: Invalid arguments\n");
-		return -1;
+		return (-1);
 	}
 
 	for (i = 0; (*env)[i] != NULL; i++)
 	{
 		if (gb_strstartswith((*env)[i], variable))
 		{
-			 free((*env)[i]);
-			 for (j = i; (*env)[j + 1] != NULL; j++)
-				 (*env)[j] = (*env)[j + 1];
-			 (*env)[j] = NULL;
-			 return (0);
+			free((*env)[i]);
+
+			for (j = i; (*env)[j + 1] != NULL; j++)
+			(*env)[j] = (*env)[j + 1];
+			(*env)[j] = NULL;
+				return (0);
 		}
 	}
 	gb_print("unsetenv: Variable not found\n");
@@ -117,10 +119,10 @@ int gb_strstartswith(const char *str, const char *prefix)
 {
 	while (*prefix != '\0')
 	{
-        if (*prefix != *str)
-            return (0);
-        prefix++;
-        str++;
+	if (*prefix != *str)
+	return (0);
+		prefix++;
+		str++;
 	}
 	return (1);
 }

@@ -1,5 +1,5 @@
 #ifndef MAIN_H
-#define _MAIN_H
+#define MAIN_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,6 +20,7 @@ extern char **environ;
 int check_cmd(char **input);
 ssize_t gb_getline(char **line_ptr, size_t *len_siz, FILE *stream);
 size_t gb_strlen(const char *input);
+void ret_error(const char *arg, int line);
 int gb_strcmp(const char *str1, const char *str2);
 char *gb_strcat(char *str1, const char *str2);
 char *gb_strcpy(char *dest, const char *scr);
@@ -39,8 +40,12 @@ void define_alias(char *name, char *value);
 char *replacer(const char *input, const char *prev, const char *present);
 char *replace_implement(char *cmd, int stat, int pid);
 void itoa(int num, char *str);
+<<<<<<< HEAD
 int dir_present(const char *path);
 
+=======
+/*int gb_getline(char **lineptr, size_t *n, FILE *stream);*/
+>>>>>>> 9bcfd610db6fb39beff1e798ac3af1d9a0a35387
 
 typedef struct Alias
 {

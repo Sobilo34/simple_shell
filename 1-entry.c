@@ -12,10 +12,11 @@ void return_error(const char *arg, int line);
 int main(int argc, char **env)
 {
 	const char *error_arg;
-        ssize_t message;
-        size_t len;
-        char *buffer, *token = NULL;
-        char *args[1024], *delim = " \t\r\a\n", *prompt = "#cisfun:", *comm_start;
+	ssize_t message;
+	size_t len;
+	char *buffer = NULL, *token = NULL;
+	char *args[1024];
+	char *delim = " \t\r\a\n", *prompt = "#cisfun:", *comm_start;
 	char *commands[1024];
 	int value, i;
 	char curr_dir[PATH_MAX];
@@ -30,7 +31,7 @@ int main(int argc, char **env)
 			if (getcwd(curr_dir, PATH_MAX) == NULL)
 			{
 				perror("getcwd");
-				exit(EXIT_FAILURE);
+				exit(2);
 			}
 			write(STDOUT_FILENO, prompt, gb_strlen(prompt));
 			write(STDOUT_FILENO, curr_dir, gb_strlen(curr_dir));
@@ -73,6 +74,7 @@ int main(int argc, char **env)
 				idx++;
 			}
 			args[idx] = NULL;
+<<<<<<< HEAD
 	/**	if (gb_strcmp(args[0], "setenv") == 0 && args[1] != NULL && args[2] != NULL)
 		{
 			gb_setenv(env, args[1], args[2]);
@@ -87,7 +89,17 @@ int main(int argc, char **env)
 	return_error(error_arg, line_num);
 
 	return (0);
+=======
 
+			success = exec_with_operator(args, env, success);
+		}
+		free(buffer);
+	}
+
+	ret_error(error_arg, line_num);
+>>>>>>> 9bcfd610db6fb39beff1e798ac3af1d9a0a35387
+
+	return (0);
 }
 
 
@@ -95,28 +107,20 @@ int main(int argc, char **env)
 /**
  * split_cmds - This is the funtion that spilts string to different commands
  * @input: The user's input
- * @commands: The array to store the splitted commands
+ * @cmd: The array to store the splitted commands
  * Return: Value of the commads splitted
  */
 int split_cmds(char *input, char *cmd[])
 {
 	int value = 0;/**Number of commands**/
 	char *token;
-       
-	if (input == NULL || input[0] == '\0')
-		return (0);
 
-	token = gb_strtok(input, " "); /**split commands with " "**/
+	token = gb_strtok(input, ";"); /**split commands with ";"**/
 	while (token != NULL)
 	{
-		cmd[value] = gb_strdup(token);
-		if (cmd[value] == NULL)
-		{
-			perror("gb_strdup");
-			exit(EXIT_FAILURE);
-		}
+		cmd[value] = token;
 		value++;
-		token = gb_strtok(NULL, " ");
+		token = gb_strtok(NULL, ";");
 	}
 
 	return (value);
@@ -125,7 +129,8 @@ int split_cmds(char *input, char *cmd[])
 
 
 /**
- * exec_with_operator - This is the function that execute command and handle "&&" and "||" operators
+ * exec_with_operator - This is the function that execute command
+ * and handle "&&" and "||" operators
  * @args: command arguments array
  * @env: Array of environment variables
  * @success: Status of success of commands
@@ -145,7 +150,6 @@ int exec_with_operator(char **args, char **env, int success)
 			args[i] = NULL;
 			break;
 		}
-		
 		else if (gb_strcmp(args[i], "||") == 0)
 		{
 			operator = "||";
@@ -176,7 +180,7 @@ int exec_with_operator(char **args, char **env, int success)
 		{
 			if (exit_code[i] < '0' || exit_code[i] > '9')
 			{
-				return_error(exit_code, 1);
+				ret_error(exit_code, 1);
 				exit(2);
 			}
 
@@ -184,7 +188,7 @@ int exec_with_operator(char **args, char **env, int success)
 		}
 		if (exit_status < 0)
 		{
-			return_error(exit_code, 1);
+			ret_error(exit_code, 1);
 			exit(2);
 		}
 		exit(exit_status);
@@ -202,7 +206,7 @@ int exec_with_operator(char **args, char **env, int success)
 		if (change_curr_dir(args) == -1)
 		{
 			perror("can't change dir");
-			return 0;
+			return (0);
 		}
 		else
 			return (1);
@@ -230,17 +234,16 @@ int exec_with_operator(char **args, char **env, int success)
 		paid = fork();
 		if (paid == -1)
 		{
-			error_prt(args[0], "fork");
-			exit(EXIT_FAILURE);
+			perror("fork");
+			exit(2);
 		}
 
 		if (paid == 0)
 		{
 			exec_cmd(args, env);
-			error_prt(args[0], "fork");
-			exit(EXIT_FAILURE);
+			perror("fork");
+			exit(2);
 		}
-		
 		else
 		{
 			wait(&status);
@@ -249,12 +252,10 @@ int exec_with_operator(char **args, char **env, int success)
 			{
 				return (result);
 			}
-			
 			else if (gb_strcmp(operator, "&&") == 0)
 			{
-				return (result == 0) ? success : 0;
-			}	
-	    
+				return ((result == 0) ? success : 0);
+			}
 			else if (gb_strcmp(operator, "||") == 0)
 			{
 				return ((result == 0) ? 0 : success);
@@ -263,22 +264,26 @@ int exec_with_operator(char **args, char **env, int success)
 	}
 
 	else
+<<<<<<< HEAD
 	{
 		perror("./hsh");
 	}
+=======
+		perror("./hsh");
+>>>>>>> 9bcfd610db6fb39beff1e798ac3af1d9a0a35387
 
 	return (0);
 }
 
 
 /**
- * return__error - THis is a function that returns error message
+ * ret_error - THis is a function that returns error message
  * @arg: THe argument vector
  * @line: THe line of the error message
  * Return: Nothing
  */
 
-void return_error(const char *arg, int line)
+void ret_error(const char *arg, int line)
 {
 	dprintf(STDERR_FILENO, "./hsh: %d: exit: Illegal number: %s\n", line, arg);
 }

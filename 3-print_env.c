@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
- * print_environment - Print the environment variables.
+ * print_env - Print the environment variables.
  * @env: The array of environment variables.
  */
 
@@ -20,6 +20,7 @@ void print_env(char **env)
 	if (paid == 0)
 	{
 		char *args[] = {"/usr/bin/env", NULL};
+
 		env = environ;
 		execve("/usr/bin/env", args, env);
 		perror("execve");
