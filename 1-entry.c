@@ -82,14 +82,7 @@ int main(int argc, char **env)
 		{
 			gb_unsetenv(env, args[1]);
 		}
-*/
-			success = exec_with_operator(args, env, success);
-		}
-	}
-	return_error(error_arg, line_num);
-
-	return (0);
-=======
+**/
 
 			success = exec_with_operator(args, env, success);
 		}
@@ -97,7 +90,6 @@ int main(int argc, char **env)
 	}
 
 	ret_error(error_arg, line_num);
->>>>>>> 9bcfd610db6fb39beff1e798ac3af1d9a0a35387
 
 	return (0);
 }
@@ -261,16 +253,8 @@ int exec_with_operator(char **args, char **env, int success)
 				return ((result == 0) ? 0 : success);
 			}
 		}
-	}
-
 	else
-<<<<<<< HEAD
-	{
 		perror("./hsh");
-	}
-=======
-		perror("./hsh");
->>>>>>> 9bcfd610db6fb39beff1e798ac3af1d9a0a35387
 
 	return (0);
 }

@@ -1,20 +1,7 @@
 #include "main.h"
 
-<<<<<<< HEAD
-int dir_present(const char *path)
-{
-        struct stat stat_buf;
-        if (stat(path, &stat_buf) == 0)
-        {
-                return S_ISDIR(stat_buf.st_mode);
-        }
-
-        return (0);
-}
-
-=======
 int check_cmd(char **input);
->>>>>>> 9bcfd610db6fb39beff1e798ac3af1d9a0a35387
+
 /**
  * check_cmd - check if the command exist in the
  * path, if it does not creat a path and append it to the directory
