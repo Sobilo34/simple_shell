@@ -27,9 +27,8 @@ int change_curr_dir(char **args)
 		path = getenv("OLDPWD");
 	}
 	else
+	{
 		path = args[1];
-
-	path = args[1];
 	if (access(path, X_OK) != 0)
 	{
 		return (-1);
@@ -53,6 +52,7 @@ int change_curr_dir(char **args)
 
 	if (setenv("PWD", curr_dir, 1) != 0)
 		return (-1);
+	}
 
 	return (0);
 }
