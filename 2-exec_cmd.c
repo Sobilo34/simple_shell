@@ -16,7 +16,7 @@ void exec_cmd(char **args, char **env)
 	if (args[0] == NULL)
 	{
 		perror("Command not provided");
-		exit(2);
+		exit(EXIT_FAILURE);
 	}
 
 	if (args[0][0] == '/')
@@ -24,20 +24,20 @@ void exec_cmd(char **args, char **env)
 		if (access(args[0], X_OK) == 0)
 		{
 			execve(args[0], args, env);
-			exit(2);
+			exit(EXIT_FAILURE);
 		}
 
 		else
 		{
 			perror("execve");
-			exit(2);
+			exit(EXIT_FAILURE);
 		}
 	}
 
 	if (full_path == NULL)
 	{
 		perror("Unable to locate PATH environment variable");
-		exit(2);
+		exit(EXIT_FAILURE);
 	}
 
 	path = gb_strdup(full_path);
@@ -57,7 +57,7 @@ void exec_cmd(char **args, char **env)
 		if (access(our_path, X_OK) == 0)
 		{
 			execve(our_path, args, env);
-			exit(2);
+			exit(EXIT_FAILURE);
 		}
 
 		token = gb_strtok(NULL, ":");
@@ -65,5 +65,5 @@ void exec_cmd(char **args, char **env)
 
 	perror("./hsh");
 	free(path);
-	exit(EXIT_FAILURE);
+	exit(2);
 }
