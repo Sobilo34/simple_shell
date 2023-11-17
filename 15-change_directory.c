@@ -26,9 +26,10 @@ int change_curr_dir(char **args)
 	{
 		path = getenv("OLDPWD");
 	}
+
 	else
-	{
 		path = args[1];
+
 	if (access(path, X_OK) != 0)
 	{
 		return (-1);
@@ -37,7 +38,6 @@ int change_curr_dir(char **args)
 	if (chdir(path) != 0)
 	{
 		return (-1);
-	}
 	}
 
 	if (getcwd(prev_dir, sizeof(curr_dir)) == NULL)
