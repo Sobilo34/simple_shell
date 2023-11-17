@@ -30,6 +30,7 @@ int change_curr_dir(char **args)
 	else
 		path = args[1];
 
+	path = args[1];
 	if (access(path, X_OK) != 0)
 	{
 		return (-1);
