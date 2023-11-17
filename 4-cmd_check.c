@@ -17,6 +17,11 @@ int check_cmd(char **input)
 	int num_aliases = 0;
 
 
+	if (input[0][0] == '#')
+	{
+		return (0);
+	}
+
 	for (i = 0; i < num_aliases; i++)
 	{
 		if (gb_strcmp(input[0], aliases[i].name) == 0)
@@ -43,7 +48,7 @@ int check_cmd(char **input)
 		bufa = malloc(gb_strlen(token) + gb_strlen(*input) + 2);
 		if (bufa == NULL)
 		{
-			perror("gb_strtok");
+			perror("malloc");
 			return (0);
 		}
 
