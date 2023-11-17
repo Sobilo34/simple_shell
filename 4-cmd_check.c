@@ -44,7 +44,7 @@ int check_cmd(char **input)
 		if (bufa == NULL)
 		{
 			perror("gb_strtok");
-			exit(2);
+			return (0);
 		}
 
 		gb_strcpy(bufa, token);

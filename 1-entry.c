@@ -216,14 +216,14 @@ int exec_with_operator(char **args, char **env, int success)
 		if (paid == -1)
 		{
 			perror("fork");
-			exit(2);
+			exit(EXIT_FAILURE);
 		}
 
 		if (paid == 0)
 		{
 			exec_cmd(args, env);
 			perror("fork");
-			exit(2);
+			exit(EXIT_FAILURE);
 		}
 		else
 		{
