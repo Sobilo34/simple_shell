@@ -161,7 +161,7 @@ int exec_with_operator(char **args, char **env, int success)
 		}
 		if (exit_code != NULL)
 		{
-			exit_status = 0;
+			exit_status = 2;
 		}
 
 		for (i = 0; exit_code[i] != '\0'; i++)
