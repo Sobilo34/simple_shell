@@ -38,6 +38,7 @@ int change_curr_dir(char **args)
 	{
 		return (-1);
 	}
+	}
 
 	if (getcwd(prev_dir, sizeof(curr_dir)) == NULL)
 	{
@@ -52,7 +53,6 @@ int change_curr_dir(char **args)
 
 	if (setenv("PWD", curr_dir, 1) != 0)
 		return (-1);
-	}
 
 	return (0);
 }
