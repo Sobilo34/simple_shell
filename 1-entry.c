@@ -186,7 +186,7 @@ int exec_with_operator(char **args, char **env, int success)
 	{
 		if (change_curr_dir(args) == -1)
 		{
-			perror("can't change dir");
+			/**perror("can't change dir");**/
 			return (0);
 		}
 		else
