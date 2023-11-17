@@ -12,13 +12,8 @@ int change_curr_dir(char **args)
 {
 	char *path, prev_dir[PATH_MAX], curr_dir[PATH_MAX];
 
-	if (args[1] == NULL)
-	{
-		return (-1);
-	}
-
-	if (args[1][0] == '~' && (args[1][1] == '\0'
-					|| args[1][1] == '/'))
+	if (args[1] == NULL || (args[1][0] == '~' && (args[1][1] == '\0'
+					|| args[1][1] == '/')))
 	{
 		path = getenv("HOME");
 	}
@@ -26,11 +21,9 @@ int change_curr_dir(char **args)
 	{
 		path = getenv("OLDPWD");
 	}
-
 	else
 		path = args[1];
 
-	path = args[1];
 	if (access(path, X_OK) != 0)
 	{
 		return (-1);
