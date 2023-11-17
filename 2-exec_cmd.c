@@ -57,7 +57,7 @@ void exec_cmd(char **args, char **env)
 		if (access(our_path, X_OK) == 0)
 		{
 			execve(our_path, args, env);
-			exit(EXIT_FAILURE);
+			exit(2);
 		}
 
 		token = gb_strtok(NULL, ":");
